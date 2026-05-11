@@ -1,0 +1,54 @@
+ 
+<!DOCTYPE html>
+<html>
+<body>
+
+<style>
+  
+</style>
+<button onclick="toggleText()">Click Me</button>
+
+
+<script>
+function toggleText() {
+  
+  if (element.innerText === "black") {
+    element.innerText = "White";
+  } else {
+    element.innerText = "black";
+  }
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<p class="text">Hello</p>
+<p class="text">World</p>
+<p class="text">Welcome to JavaScript</p>
+
+<button onclick="changeText()">Click Me</button>
+
+<script>
+function changeText() {
+  // saare elements jinki class = "text" hai unko get karo
+  let elems = document.getElementsByClassName("text");
+  
+  // loop chala ke sab ka text change kar do
+  for (let i = 0; i < elems.length; i++) {
+    elems[i].innerText = "Changed " + (i+1);
+  }
+}
+</script>
+
+</body>
+</html> 
+
+

@@ -1,0 +1,330 @@
+<!-- Take a number from user. Check if it’s positive, negative, or zero. -->
+
+<script>
+// let num = prompt("Enter a number: "); //num is string
+num = Number(num); // convert string to number
+if (num > 0) {
+  console.log("The number is positive.");
+} else if (num < 0) {
+  console.log("The number is negative.");
+} else {
+  console.log("The number is zero.");
+}
+</script>
+
+
+<!-- Ask for age. If age < 18 → "Not eligible", else if 18–60 → "Eligible", else → "Senior citizen". -->
+
+
+<script>
+    // let age = prompt("Enter your age")
+    age = Number(age);
+    if(age < 18){
+        console.log("Not eligible");
+    }
+    else if(age>=18 && age <60){
+        console.log("Eligible");
+    }
+    else{
+        console.log("Senior");
+    }
+</script>
+
+
+<!--  Take 3 numbers from user & print the greatest one. -->
+<script>
+    // let a = Number(prompt("Enter First Number"));
+    // let b = Number(prompt("Enter Second Number"));
+    // let c = Number(prompt("Enter Third Number"));
+
+    if(a > b && a > c){
+        console.log("A is greatest");
+    }
+    else if(b > a && b > c){
+        console.log("B is greatest");
+    }
+    else{
+        console.log("C is greatest");
+    }
+</script>
+
+<!-- 5. Take a year. Check if it’s a *leap year* (divisible by 4 but not by 100, except divisible by 400). -->
+
+<script>
+    // let year = Number(prompt("Enter Year"));
+    if(year % 4 == 0 && year % 100 != 0 || year % 400 == 0){
+        console.log("Leap Year");
+    }
+    else{
+        console.log("Not a Leap Year");
+    }
+</script>
+
+<!-- 6. Input a character. Check if it’s *vowel, consonant, digit, or special character*. -->
+
+<script>
+    // let char = prompt("Enter Character: ");
+
+    if (char == 'a' || char == 'e' || char == 'i' || char == 'o' || char == 'u' ||
+        char == 'A' || char == 'E' || char == 'I' || char == 'O' || char == 'U') {
+        console.log("Vowel");
+    }
+    else if (char >= '0' && char <= '9') {
+        console.log("Digit");
+    }
+    else if ((char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')) {
+        console.log("Consonant");
+    }
+    else {
+        console.log("Special Character");
+    }
+</script>
+
+<!-- Take a number (1–7). Print the *day of week*. -->
+
+<script>
+    // let day = Number(prompt("Enter a number (1-7): "));
+    switch(day){
+        case 1:
+            console.log("Monday");
+            break;
+        case 2:
+            console.log("Tuesday");
+            break;
+        case 3:
+            console.log("Wednesday");
+            break;
+        case 4:
+            console.log("Thursday");
+            break;
+        case 5:
+            console.log("Friday");
+            break;
+        case 6:
+            console.log("Saturday");
+            break;
+        case 7:
+            console.log("Sunday");
+            break;
+        default:
+            console.log("Invalid Input");
+    }
+</script>
+
+
+<!-- 2. Take a grade (A, B, C, D, F). Print remarks (Excellent, Good, Average, Poor, Fail). -->
+
+<script>
+    // let grade = (prompt("Enter the Grade"))
+
+    switch(grade){
+        case 'A':
+            console.log("Excellent");
+            break;
+        case 'B':
+            console.log("Good");
+            break;
+        case 'C':
+            console.log("Average");
+            break;
+        case 'D':
+            console.log("Poor");
+            break;
+        default:
+            console.log("Fail");
+    }   
+</script>
+
+<!-- Calculator: take 2 numbers and an operator (+ - * / %). Perform operation. -->
+
+<script>
+    // let x = Number(prompt("Enter first number "));
+    // let y = Number(prompt("Enter second number "));
+    // let operator = prompt("Enter operator (+, -, *, /, %): ");
+
+    switch(operator){
+        case '+':
+            console.log(x + y);
+            break;
+        case '-':
+            console.log(x - y);
+            break;
+        case '*':
+            console.log(x * y);
+            break;
+        case '/':
+            console.log(x / y);
+            break;
+        case '%':
+            console.log(x % y);
+            break;
+        default:
+            console.log("Invalid Operator");
+    }
+
+</script>
+
+ <!-- Menu-driven program:
+
+   * 1 → Area of circle
+   * 2 → Area of rectangle
+   * 3 → Area of triangle
+     (Use switch to decide) -->
+
+<script>
+    // let choice = Number(prompt("Enter your choice (1-3): "));
+
+    switch(choice){
+    case 1:
+        let radius = Number(prompt("Enter radius of circle: "));
+        console.log("Area of Circle: " + (3.14 * radius * radius));
+        break;
+    case 2:
+        let length = Number(prompt("Enter length of rectangle: "));   
+        let breadth = Number(prompt("Enter breadth of rectangle: "));
+        console.log("Area of Rectangle: " + (length * breadth));
+        break;
+    case 3:
+        let base = Number(prompt("Enter base of triangle: "));
+        let height = Number(prompt("Enter height of triangle: "));
+        console.log("Area of Triangle: " + (0.5 * base * height));
+        break;
+    } 
+
+</script>
+
+
+<!-- 5. Take month number (1–12). Print number of *days in that month*. (Consider leap year for February). -->
+
+<script>
+    // let month = Number(prompt("Enter the Month(1-12):"));
+
+    switch(month){
+        case 1: 
+            console.log("January");
+            console.log("31 days");
+        break;
+        case 2: 
+            console.log("February");
+            console.log("Leep Year: days(28 or 29)");
+        break;
+        case 3: 
+            console.log("March");
+            console.log("31 days");
+        break;
+        case 4: 
+            console.log("April");
+            console.log("30 days");
+        break;
+        case 5: 
+            console.log("May");
+            console.log("31 days");
+        break;
+        case 6: 
+            console.log("June");
+            console.log("30 days");
+        break;
+        case 7: 
+            console.log("July");
+            console.log("31 days");
+        break;
+        case 8: 
+            console.log("August");
+            console.log("31 days");
+        break;
+        case 9: 
+            console.log("September");
+            console.log("30 days");
+        break;
+        case 10: 
+            console.log("October");
+            console.log("31 days");
+        break;
+        case 11: 
+            console.log("November");
+            console.log("30 days");
+        break;
+        case 12: 
+            console.log("December");
+            console.log("31 days");
+        break;
+    }
+</script>
+
+
+<!-- 1. Check if a number is *between 10 and 50*. -->
+<script>
+    // let num = Number(prompt("Enter a number: "));
+    if(num >= 10 && num <= 50){
+        console.log("Number is between 10 and 50");
+    }
+    else{
+        console.log("Number is not between 10 and 50");
+    }
+</script>
+
+<!-- Check if a number is *divisible by 3 OR 5*. -->
+
+<script>
+    // let number = Number(prompt("Enter a number: "));
+    if(num % 3 == 0 || num % 5 == 0){
+        console.log("Number is divisible by 3 or 5");
+    }
+    else{
+        console.log("Number is not divisible by 3 or 5");
+    }
+</script>
+
+<script>
+    // let user = Number(prompt("Enter username: "));
+    // let age = Number(prompt("Enter age: "));
+    // let license = prompt("Do you have a driving license? (True/False): "). toLowerCase() === 'true';
+    if(age >= 18 && license == true){
+        console.log("You are eligible to drive");
+    }
+    else{
+        console.log("You are not eligible to drive");
+    }
+</script>
+
+
+<!-- Login system: username must be "admin" *AND* password must be "12345". Else → invalid login. -->
+
+<script>
+    // let loginSystem = prompt("Enter username: ");
+    // let password = prompt("Enter password: ");
+    if(loginSystem.toLowerCase() === "admin" && password === "12345"){
+        console.log("Login Successful");
+    }
+    else{
+        console.log("Invalid Login");
+    }
+ </script>
+
+ <!-- Take marks of 3 subjects. Pass if all ≥ 40. If any one < 40 → Fail. -->
+<script>
+    // let sub1 = Number(prompt("Enter marks of subject 1: "));
+    // let sub2 = Number(prompt("Enter marks of subject 2: "));
+    // let sub3 = Number(prompt("Enter marks of subject 3: "));
+    if(sub1 >= 40 && sub2 >= 40 && sub3 >= 40){
+        console.log("Pass");
+    }
+    else{
+        console.log("Fail");
+    }
+</script>
+
+
+<!-- Complex condition: A student is eligible for scholarship if
+   * Marks ≥ 85 *OR* (Marks ≥ 75 *AND* sports = true). -->
+
+   <script>
+    let marks = Number(prompt("Enter your marks: "));
+    let sports = prompt("Are you in sports? (True/False): ").toLowerCase() === 'true';
+    if(marks >= 85 || (marks >= 75 && sports == true)){
+        console.log("Eligible for Scholarship");
+    }
+    else{
+        console.log("Not Eligible for Scholarship");
+    }
+   </script>

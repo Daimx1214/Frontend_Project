@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Table Example</title>
+</head>
+<style>
+    table {
+        text-align: center;
+        border: 1px solid black ;
+        border-collapse: collapse;       /*borders sath mila da ga  */
+    }
+    th, td, tr {
+        border: 1px solid black;
+        padding: 10px;                  /*padding is space between border and content */
+    }
+    </style>
+<body>
+<h1>Table Example</h1>
+<table>
+<thead>
+ <tr>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Address</th>
+    <th>Email</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Daim Ali</td>
+    <td>20</td>
+    <td>Multan, Pakistan</td>
+    <td>Daimx1213@gmail.com</td>
+  </tr>
+  <tr>
+    <td>Ali</td>
+    <td>70</td>
+    <td>Pakistan</td>
+    <td>Dai3@gmail.com</td>
+  </tr>
+  <tr>
+    <td>Daim </td>
+    <td>28</td>
+    <td>Multan</td>
+    <td>Dax@gmail.com</td>
+  </tr>
+  <tr>
+    <td>Daiml</td>
+    <td>56</td>
+    <td>MulPak</td>
+    <td>Daimx1214@gmail.com</td>
+  </tr>
+  <tr>
+    <!-- <td>Daim Ali</td>
+    <td>70</td>
+    <td>Multan</td> -->
+    <td colspan = "4">count:5</td>
+  </tr>
+  <tbody>
+    <tfoot>
+      <tr>
+        <td>Footer</td>
+        <td>30</td>
+        <td>Multan</td>
+        <td>footer@gmail.com</td>
+      </tr>
+  </table>
+</body>
+<hr>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Table</title>
+    <style>
+        table {
+        text-align: center;
+        border: 2px solid black ;
+        border-collapse: collapse;       /*borders sath mila da ga  */
+    }
+    th, td, tr {
+        border: 2px solid black;
+        padding: 10px;                  /*padding is space between border and content */
+    }
+    </style>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th colspan="8">TIME TABLE</th>
+    </tr>
+    <tr>
+      
+        <th rowspan="7">Hours</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th >Sun</th>
+    </tr>
+    <tr>
+        <td>Math</td>
+        <td>Math</td>
+        <td>Math</td>
+        <td>Math</td>
+        <td>Math</td>
+        <td>Math</td>
+        <td rowspan="6"></td>
+    </tr>
+    <tr>
+        <td>Science</td>
+        <td>Science</td>
+        <td>Science</td>
+        <td>Science</td>
+        <td>Science</td>
+        <td>Science</td>
+    </tr>
+    <tr>
+        <td colspan="6">Lunch</td>
+    </tr>
+    <tr>
+        <td>SST </td>
+        <td>SST</td>
+        <td>SST</td>
+        <td>SST</td>
+        <td>SST</td>
+        <td rowspan="2">Games</td>
+    </tr>
+    <tr>
+        <td>CS</td>
+        <td>CS</td>
+        <td>CS</td>
+        <td>CS</td>
+        <td>CS</td>
+    </tr>
+
+</table>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selecting elements</title>
+</head>
+<body>
+
+    <h1 id="fung">Elements Selection</h1>
+    <p>Elements can be selected by ID class Tag</p>
+
+    <button onclick="fungg()">Click to Change</button>
+    <button onclick="changeColor()">Change Color</button>
+    <button onclick="changeBackground()">Background</button>
+
+    <script>
+        function fungg() {
+            let x = document.getElementById("fung");
+            if (x.innerHTML === "Elements Selection") {
+                x.innerHTML = "Elements can be selected by ID";
+            } else {
+                x.innerHTML = "Elements Selection";
+            }
+        }
+
+        function changeColor() {
+            let h = document.getElementById("fung");
+            if (h.style.color === "red") {
+                h.style.color = "black";
+            } else {
+                h.style.color = "red";
+            }
+        }
+
+        function changeBackground() {
+            if (document.body.style.backgroundColor === "lightblue") {
+                document.body.style.backgroundColor = "white";
+            } else {
+                document.body.style.backgroundColor = "lightblue";
+            }
+        }
+    </script>
+
+</body>
+</html>
+<hr>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selecting elements</title>
+</head>
+<body>
+
+    <h1 class="Text">Element selection by QuerySelector</h1>
+    <button onclick="fun()">Button</button>
+    <script>
+        function fun(){
+        let y = document.querySelector(".Text");
+        y.innerHTML = "Text has converted!......done";
+        }
+    </script>
+</body>
+</html>
+<hr>
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selecting elements</title>
+</head>
+<body>
+    <img id="pic" src="https://via.placeholder.com/100">
+<button onclick="hideImage()">Hide</button>
+
+<script>
+  function hideImage() {
+    let q= document.getElementById("pic")
+    q.style.display = "none";
+  }
+</script>
+
+</body>
+</html>
+<hr>
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adding new element</title>
+</head>
+<body>
+   <button onclick="addPara()">Add Paragraph</button>
+<div id="container"></div>
+
+<script>
+  function addPara() {
+    let fuk = document.createElement("h1");  // koi bhi tag aiya ga yahan
+    fuk.innerText = "New Heading is here...";
+    let ss = document.getElementById("container")
+    ss.appendChild(fuk);
+  }
+</script>
+</body>
+</html>
+<hr>
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adding </title>
+</head>
+<body>
+<p id="text">Hello World</p>
+<button onclick="highlightText()">Highlight</button>
+
+<script>
+  function highlightText() {
+    let para = document.getElementById("text");
+    para.style.background = "yellow";
+    para.style.fontWeight = "bold";
+  }
+</script>
+
+</body>
+</html>
+<hr>

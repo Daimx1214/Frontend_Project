@@ -1,0 +1,80 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+h1{
+    background-color: rgb(5, 5, 59);
+    color:  white;
+    height: 5rem;
+    text-align: center;
+    line-height: 5rem;
+}
+.rps{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 5rem;
+}
+.choice{
+    height: 160px;
+    width: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.choice:hover{
+    cursor: pointer;
+    background-color: rgb(5, 5, 59);
+    box-sizing: border-box;
+    border-radius: 50%;
+}
+
+img{
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.scoreboard{
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 3rem;
+margin-top: 3rem;
+font-size: 2rem;
+}
+.Score{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#user-score, #computer-score{
+    background-color: rgb(5, 5, 59);
+    color: white;
+    height: 80px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+#resultMessage {
+    background-color: rgb(5, 5, 59);
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content; /* text jitna hi width hoga */
+    padding: 1rem 2rem;
+    margin: 2rem auto; /* sirf 2rem space scoreboard k neeche */
+    border-radius: 20px;
+}
+

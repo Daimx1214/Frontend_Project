@@ -1,0 +1,581 @@
+<!-- 1️⃣ Create a <p> tag with id "info". Use JS to change its innerText to "Hello DOM!".-->
+<!-- 2️⃣ Create an <h1> and use JS to log its tagName in the console. -->
+<!-- 3️⃣ Create a <button> that, when clicked, changes the background color of the page to yellow using style. -->
+<!-- 4️⃣ Create an <img> tag and use setAttribute() to set its src and alt dynamically. -->
+<!-- 5️⃣ Create a <p> element and remove it using remove() after 3 seconds (using setTimeout).
+6️⃣ Create a <div> with some text and two buttons — one to change its innerHTML, and one to change its textContent. Observe the difference.
+7️⃣ Create a <ul> list with 3 items. Add a button that appends a new <li> with text "New Item Added!" using append(). -->
+<!-- 8️⃣ Create a <ul> list and a button that prepends "First Item!" using prepend().
+9️⃣ Create a paragraph and use two buttons — one inserts a line "Before Element" using before(), and another inserts "After Element" using after().
+🔟 Create a link with an initial href "https://google.com". Add a button that uses getAttribute() to display its href and another button that changes it to "https://youtube.com" using setAttribute(). -->
+<!-- 1️⃣1️⃣ Create a button that dynamically creates a <div> with random background color each time it’s clicked (createElement() + append()).
+1️⃣2️⃣ Create a counter app using two buttons: “Increment” and “Decrement” — show the number in a <p> element.
+1️⃣4️⃣ Create a <p> that changes color to red when hovered using JS onmouseover and changes back on onmouseout. -->
+<!-- 1️⃣5️⃣ Create 3 different <button>s that perform: append, prepend, and remove on the same container. -->
+<!-- 1️⃣7️⃣ Create a <div> with id "box". Use style and setAttribute() both to resize and recolor it dynamically.
+1️⃣8️⃣ Create an input field and a button. When the button is clicked, use innerText to display “Hello, [user input]!” in a new <p> element. -->
+<!-- 1️⃣9️⃣ Create a function that counts how many <p> tags exist in the document and displays the count.
+2️⃣0️⃣ Create a “Reset” button that clears all dynamically added elements from the page (using innerHTML = ""). -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 🌈 GLOBAL RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        /* 🌤 PAGE BACKGROUND */
+        body {
+            background: linear-gradient(135deg, #fdfbfb, #ebedee);
+            color: #222;
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* 🧭 HEADING STYLE */
+        h1 {
+            color: #333;
+            font-size: 32px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* 📦 CONTAINER BOXES */
+        .container {
+            background: #ffffff;
+            border-radius: 10px;
+            width: 60%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            font-size: 18px;
+        }
+
+        /* 🖼 IMAGES */
+        img {
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        /* 📋 LISTS */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            width: 300px;
+        }
+
+        ul li {
+            background: #f8f8f8;
+            margin: 6px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        ul li:hover {
+            background: #e3f2fd;
+            transform: translateY(-3px);
+        }
+
+        /* 🧮 COUNTER DISPLAY */
+        #counter {
+            display: inline-block;
+            font-size: 24px;
+            color: white;
+            background: #111;
+            padding: 10px 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+        }
+
+        /* 💬 TEXT HOVER BOX */
+        #text {
+            background: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 20px auto;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        #text:hover {
+            transform: scale(1.05);
+            background: #43a047;
+        }
+
+        /* 🧰 BUTTONS */
+        button {
+            background: linear-gradient(135deg, #0078d7, #005fa3);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            margin: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #005fa3, #00457c);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* 🧾 INPUT FIELD */
+        input[type="text"] {
+            width: 250px;
+            height: 35px;
+            border: 2px solid #0078d7;
+            border-radius: 6px;
+            padding: 0 10px;
+            outline: none;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #005fa3;
+            box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
+        }
+
+        /* 🔳 BOX DIV */
+        #box,
+        #Changed {
+            background: #673ab7;
+            color: white;
+            width: 150px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: 0.3s ease;
+        }
+
+        #box:hover,
+        #Changed:hover {
+            transform: scale(1.05);
+            background: #5e35b1;
+        }
+
+        /* 🔗 LINK */
+        a {
+            color: #0078d7;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            color: #ff4081;
+            text-decoration: underline;
+        }
+
+        /* 📱 RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                width: 90%;
+                font-size: 16px;
+            }
+
+            button {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="heading">Hello Daim</h1>
+    <p id="info"></p>
+    <img id="imge" src="Images/Paper.jpg" alt="Image" width="200">
+    <p id="remov">Remove after 3 seconds</p>
+    <div class="container" style="font-size: 20px;">Adding some text</div>
+    <ul id="addd">
+        <li>ONE</li>
+        <li>TWO</li>
+        <li>THREE</li>
+    </ul>
+    <p id="parag">This is a paragraph from where to insert before and after</p>
+    <a id="google" href="https://google.com" target="_blank">Visit Google then YT</a>
+
+    <p id="counter">0</p>
+
+    <p id="text" onmouseover="setred()" onmouseout="setlightpurple()">Hover on the given Text</p>
+    <input type="text" id="Hello" placeholder="Enter text here..." style="width: 210px;      height: 25px;">
+
+
+    <div id="box">This is Box</div>
+    <ul id="itachi">
+  <li>
+    <p>Item 1</p>
+    <button onclick="deleteItem(this)">Delete1</button>
+  </li>
+  <li>
+    <p>Item 2</p>
+    <button onclick="deleteItem(this)">Delete2</button>
+  </li>
+  <li>
+    <p>Item 3</p>
+    <button onclick="deleteItem(this)">Delete3</button>
+  </li>
+</ul>
+
+
+    <button onclick="showhead()">ShowTag</button>
+    <button onclick="inner()">AddText</button>
+    <button onclick="bodychange()">BackGround Change</button>
+    <button onclick="imgchange()">Image</button>
+    <button onclick="remov()">Remove after 3</button>
+    <button onclick="Textcontainer()"> In Container innerText</button>
+    <button onclick="HTMLcontainer()">In Container innerHTML</button>
+    <button onclick="appendElement()">Append P</button>
+    <button onclick="prepentElement()">Prepend element</button>
+    <button onclick="before()">Before P</button>
+    <button onclick="after()">After P</button>
+    <button onclick="Google()">Google to YT</button>
+    <button onclick="creteele()">Div bana</button>
+    <button onclick="inc()">Increment</button>
+    <button onclick="dec()">Decrement</button>
+    <button onclick="changeBox()">Resize and SetAttribute</button>
+    <button onclick="hello()">Input field</button>
+    <button onclick="fung()">Count P tag</button>
+    <button onclick="resetAll()">Reset</button>
+
+
+
+    <script>
+        function showhead() {
+            let had = document.querySelector("#heading")
+            alert(had.tagName)
+        }
+        function inner() {
+            let iner = document.getElementById("info");
+            iner.innerText = "Hello DOM!"
+        }
+        function bodychange() {
+            document.body.style.background = "Yellow";
+        }
+        function imgchange() {
+            let imgee = document.getElementById("imge");
+            imgee.setAttribute("src", "Images/Rock.jpg");
+            imgee.setAttribute("alt", "Image changed");
+        }
+        function remov() {
+            setTimeout(() => {
+                let remo = document.getElementById("remov");
+                remo.remove();
+            }, 3000)
+        }
+        function Textcontainer() {
+            let nnaammee = document.getElementsByClassName("container")[0];
+            nnaammee.innerHTML = "<b>Changed using textContent</b>"
+        }
+        function HTMLcontainer() {
+            let nnaa = document.getElementsByClassName("container")[0];
+            nnaa.innerHTML = "<b>Changed using textHTML</b>"
+        }
+
+        function appendElement() {
+            let tagele = document.getElementById("addd")
+            let newadd = document.createElement("li");
+            newadd.innerText = "New Item Added at last "
+            tagele.appendChild(newadd);
+        }
+        function prepentElement() {
+            let tagele = document.getElementById("addd")
+            let newadd = document.createElement("li");
+            newadd.innerText = "New Item Added at first "
+            tagele.prepend(newadd);
+        }
+        function before() {
+            let befo = document.getElementById("parag");
+            let newadd = document.createElement("p");
+            newadd.innerText = "Before para "
+            befo.before(newadd);
+        }
+        function after() {
+            let aftr = document.getElementById("parag");
+            let newadd = document.createElement("p");
+            newadd.innerText = "After para "
+            aftr.after(newadd);
+        }
+        function Google() {
+            let google = document.getElementById("google");
+            google.setAttribute("href", "https://youtube.com")
+        }
+
+        function creteele() {
+            let divv = document.createElement("div")
+            divv.innerHTML = " Div is created";
+            divv.style.background = "lightgreen";
+            divv.style.color = "black";
+            divv.style.padding = "15px"
+            divv.style.margin = "15px"
+
+            document.body.appendChild(divv);
+        }
+
+        let count = 0
+        function inc() {
+            count++;
+            document.getElementById("counter").innerText = count;
+        }
+        function dec() {
+            count--;
+            document.getElementById("counter").innerText = count;
+        }
+        function setred() {
+            let hov = document.getElementById("text")
+            hov.style.color = "White";
+            hov.style.background = "Red";
+        }
+
+        function setlightpurple() {
+            let hov = document.getElementById("text")
+            hov.style.color = "Black";
+            hov.style.background = "LightGreen";
+        }
+
+        function changeBox() {
+            let boxEl = document.getElementById("box");
+            boxEl.style.width = "100px";
+            boxEl.style.height = "100px";
+            boxEl.style.background = "purple";
+            boxEl.style.color = "white";
+
+            boxEl.setAttribute("id", "Changed"); // ✅ valid
+        }
+
+        function hello() {
+            let hi = document.getElementById("Hello").value;
+            let para = document.createElement("p");
+            para.innerText = "Hello, " + hi + "!";
+            document.body.appendChild(para);
+        }
+
+        let countt = 0;
+        function fung() {
+            let tagging = document.querySelectorAll("p");
+            let countt = tagging.length;
+            alert("Total <p> tags: " + countt);
+        }
+        function resetAll() {
+            document.getElementById("addd").innerHTML = "";
+        }
+          function deleteItem(btn) {
+    let confir = confirm("Are you sure you want to delete?");
+    if (confir) {
+      btn.parentElement.remove(); // parent <li> delete
+    }
+  }
+
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+<!-- Make a mini DOM playground: a box + buttons to test append, prepend, remove, before, after, setAttribute, etc.
+Basically a small web app combining all these features in one interface.  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini DOM Playground</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      background: #f4f6f8;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    #playground {
+      background: #fff;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    #boxz {
+      background: lightblue;
+      padding: 20px;
+      margin: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      margin: 5px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .log {
+      background: #222;
+      color: #0f0;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 5px;
+      font-family: monospace;
+      height: 100px;
+      overflow-y: auto;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧩 Mini DOM Playground</h1>
+
+  <div id="playground">
+    <div id="boxz">✨ I'm the Box</div>
+  </div>
+
+  <div>
+    <button onclick="appendItem()">Append</button>
+    <button onclick="prependItem()">Prepend</button>
+    <button onclick="addBefore()">Before</button>
+    <button onclick="addAfter()">After</button>
+    <button onclick="removeBox()">Remove</button>
+    <button onclick="setAttributeBox()">Set Attribute</button>
+    <button onclick="resetPlayground()">Reset</button>
+  </div>
+
+  <div class="log" id="log"></div>
+
+  <script>
+    const logBox = (msg) => {
+      let logDiv = document.getElementById("log");
+      logDiv.innerHTML += `> ${msg}<br>`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+    };
+
+    function appendItem() {
+      const box = document.getElementById("boxz");
+      const newEl = document.createElement("p");
+      newEl.textContent = "✅ Appended element";
+      box.appendChild(newEl);
+      logBox("Appended new element inside the boxz.");
+    }
+
+    function prependItem() {
+      const box = document.getElementById("boxz");
+      const newEl = document.createElement("p");
+      newEl.textContent = "⬆️ Prepended element";
+      box.prepend(newEl);
+      logBox("Prepended new element at top of the box.");
+    }
+
+    function addBefore() {
+      const box = document.getElementById("boxz");
+      const newEl = document.createElement("div");
+      newEl.textContent = "⬅️ Element added before box";
+      newEl.style.color = "darkgreen";
+      box.before(newEl);
+      logBox("Added element before the box.");
+    }
+
+    function addAfter() {
+      const box = document.getElementById("boxz");
+      const newEl = document.createElement("div");
+      newEl.textContent = "➡️ Element added after box";
+      newEl.style.color = "darkred";
+      box.after(newEl);
+      logBox("Added element after the box.");
+    }
+
+    function removeBox() {
+      const box = document.getElementById("boxz");
+      if (box) {
+        box.remove();
+        logBox("❌ Box removed from DOM.");
+      } else {
+        logBox("⚠️ Box already removed!");
+      }
+    }
+
+    function setAttributeBox() {
+      const box = document.getElementById("boxz");
+      if (box) {
+        box.setAttribute("data-status", "modified");
+        box.style.background = "#ff69b4";
+        box.style.color = "white";
+        logBox("🎨 Box color changed and attribute added.");
+      } else {
+        logBox("⚠️ Box not found to set attributes!");
+      }
+    }
+
+    function resetPlayground() {
+      const playground = document.getElementById("playground");
+      playground.innerHTML = `<div id="boxz">✨ I'm the Box</div>`;
+      logBox("🔄 Playground reset to original state.");
+    }
+  </script>
+
+</body>
+</html>
+
+

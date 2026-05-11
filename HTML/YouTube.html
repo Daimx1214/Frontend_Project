@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube</title>
+  <link rel="icon" type="png" sizes="1024x1024" href="MainLogoYT.png">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1000;
+    }
+
+    #headYT {
+      width: 106px;
+      height: auto;
+      margin-left: 16px;
+    }
+
+    .menu-icon {
+      margin-right: 10px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+    }
+
+    .menu-icon:hover {
+      background: #f2f2f2;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+      margin: 8px;
+      min-width: 250px;
+    }
+
+    #Srch {
+      flex: 1;
+      max-width: 560px;
+      margin-top: -14px;
+      margin-left: 20px;
+      height: 34px;
+      border: 1px solid #ccc;
+      border-right: none;
+      border-radius: 25px 0 0 25px;
+      padding-left: 17px;
+      font-size: 17px;
+    }
+
+    #aa {
+      height: 37.5px;
+      width: 60px;
+      margin-top: -14px;
+      border: 1px solid #ccc;
+      border-left: none;
+      border-radius: 0 25px 25px 0;
+      background: #f8f8f8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mic-btn {
+      margin-left: 8px;
+      margin-top: -14px;
+      background: #f8f8f8;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .right-actions {
+      margin-right: 0px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-top: -6px;
+    }
+
+    .right-actions button,
+    .right-actions img {
+      position: relative;
+      top: -6px;
+    }
+
+    .right-actions button {
+      padding: 6px 16px;
+      background: #e4e2e2;
+      color: black;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    #ds {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+    }
+
+    #img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      object-fit: cover;
+      position: relative;
+      top: -2px;
+      margin-left: 6px;
+    }
+
+    /* Scrollable bar */
+    .bar {
+      margin-left: 110px;
+      overflow-x: auto;
+      position: sticky;
+      top: 78px;
+      background: white;
+      z-index: 999;
+    }
+
+    .bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .bar ul {
+      display: inline-flex;
+      gap: 10px;
+      padding: 10px 16px;
+      margin: 0;
+      list-style: none;
+    }
+
+    .bar ul li {
+      padding: 8px 16px;
+      background: #f1f1f1;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .bar ul li:hover {
+      background: black;
+      color: white;
+    }
+
+    aside {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 80px;
+      height: 100%;
+      background: #fff;
+      padding-top: 10px;
+    }
+
+    aside .home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px 0;
+      text-decoration: none;
+    }
+
+    aside .home a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    aside .home img {
+      margin-bottom: 7px;
+    }
+
+    aside .home label {
+      color: #000;
+      text-align: center;
+    }
+
+    .bar {
+      margin-left: 90px;
+    }
+
+    /* ✅ Video grid */
+    .videos {
+      margin-left: 100px;
+      /* sidebar space */
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .video-card {
+      cursor: pointer;
+    }
+
+    .video-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .video-info {
+      display: flex;
+      margin-top: 8px;
+      gap: 10px;
+    }
+
+    .video-info img {
+      width: 40px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .video-text {
+      font-size: 14px;
+      color: #0f0f0f;
+    }
+
+    .title {
+      font-weight: bold;
+      margin-bottom: 4px;
+      overflow: hidden;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: #606060;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo-section">
+      <div class="menu-icon" title="Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24">
+          <path d="M21 6H3V5h18v1zm0 5H3v1h18v-1zm0 6H3v1h18v-1z"></path>
+        </svg>
+      </div>
+      <a href="https://www.youtube.com/" title="YouTube Home">
+        <img id="headYT" src="LogoYT.png" alt="YouTube Logo">
+      </a>
+    </div>
+
+    <div class="search-container">
+      <input id="Srch" type="text" placeholder="Search">
+      <button id="aa" title="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="25" width="25" viewBox="0 0 24 24">
+          <path
+            d="M16.296 16.996a8 8 0 11.707-.708l3.909 3.91-.707.707-3.909-3.909zM18 11a7 7 0 00-14 0 7 7 0 1014 0z" />
+        </svg>
+      </button>
+      <button class="mic-btn" title="Search with your voice">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2z" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="right-actions">
+      <button>+ Create</button>
+      <img id="ds" src="NotificationYT.svg" width="20">
+      <img id="img" src="ME.jpg" width="28" height="28">
+    </div>
+  </header>
+
+  <!-- Menu Scroll -->
+  <div class="bar">
+    <ul>
+      <li>All</li>
+      <li>Mixes</li>
+      <li>Music</li>
+      <li>Live</li>
+      <li>Gaming</li>
+      <li>News</li>
+      <li>Sports</li>
+      <li>Learning</li>
+      <li>Fashion & Beauty</li>
+      <li>Programming</li>
+      <li>Computer tech.</li>
+      <li>Movies</li>
+      <li>Anime</li>
+      <li>Podcasts</li>
+      <li>Comedy</li>
+      <li>Travel</li>
+      <li>...</li>
+    </ul>
+  </div>
+
+  <!-- ✅ Video Grid -->
+  <div class="videos"> <!-- Video 1 -->
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-card"> <img src="HomeYT.svg" alt="Thumbnail">
+      <div class="video-info"> <img src="ME.jpg" alt="Channel">
+        <div class="video-text">
+          <div class="title">I Became The Biggest Noob In PUBG Mobile</div>
+          <div class="meta">Ducky Extra</div>
+          <div class="meta">1.4M views • 1 year ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<aside>
+  <div class="home"><a href="https://www.youtube.com/" title="Home">
+      <img src="HomeYT.svg" alt="Home" width="30px" height="30px">
+      <label style="font-size: 10px; color: black;">Home</label>
+    </a></div>
+  <div class="home"><a href="https://www.youtube.com/shorts" title="Shorts">
+      <img src="ShortsYT.png" alt="Shorts" width="30px" height="30px">
+      <label style="font-size: 10px; color: black;">Shorts</label>
+    </a></div>
+  <div class="home"><a href="https://www.youtube.com/feed/subscriptions" title="Subscriptions">
+      <img src="subscriptionYT.png" id="sub" alt="Subscriptions" width="30px" height="30px">
+      <label style="font-size: 10px; color: black;">Subscriptions</label>
+    </a></div>
+  <div class="home"><a href="https://www.youtube.com/feed/you" title="You">
+      <img src="UserYT.svg" alt="Library" width="30px" height="30px">
+      <label style="font-size: 10px; color: black;">You</label>
+    </a></div>
+</aside>
+
+
+</html>

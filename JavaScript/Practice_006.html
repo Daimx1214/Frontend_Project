@@ -1,0 +1,244 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 40px;
+    }
+    #container {
+      border: 2px solid #333;
+      padding: 20px;
+      width: 300px;
+      margin: 0 auto;
+      border-radius: 10px;
+    }
+    .note {
+      color: darkblue;
+    }
+    button {
+      margin: 8px;
+      padding: 8px 15px;
+      border: none;
+      background-color: #0078d7;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="container">
+    <h1 id="title">Hello</h1>
+    <p class="note">One</p>
+    <p class="note">Two</p>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button onclick="useGetById()">getElementById()</button>
+    <button onclick="useGetByClass()">getElementsByClassName()</button>
+    <button onclick="useGetByTag()">getElementsByTagName()</button>
+    <button onclick="useQuerySelector()">querySelector()</button>
+    <button onclick="useQuerySelectorAll()">querySelectorAll()</button>
+  </div>
+
+  <script>
+    function useGetById() {
+      const title = document.getElementById('title');
+      title.textContent = "Changed";
+      title.style.color = "red";
+    }
+
+    function useGetByClass() {
+      const notes = document.getElementsByClassName('note');
+      for (let i = 0; i < notes.length; i++) {
+        notes[i].style.color = "Red";
+        notes[i].textContent = "Changed by Class " + (i + 1);
+      }
+    }
+
+    function useGetByTag() {
+      const paras = document.getElementsByTagName('p');
+      for (let i = 0; i < paras.length; i++) {
+        paras[i].style.background = "yellow";
+        paras[i].style.color = "Black";
+      }
+    }
+
+    function useQuerySelector() {
+      const firstNote = document.querySelector('.note');
+      firstNote.style.fontWeight = "bold";
+      firstNote.textContent = "Selected first";
+    }
+
+    function useQuerySelectorAll() {
+      const allNotes = document.querySelectorAll('.note');
+      allNotes.forEach((el, i) => {
+        el.style.background = i % 2 === 0 ? "lightgreen" : "lightpink";
+      });
+    }
+  </script>
+
+</body>
+</html> -->
+
+<!-- Use getElementById() to change the text of an element with id="title" to "Welcome User".
+Use getElementsByClassName() to change the text color of all elements with class name "note" to blue.
+Use getElementsByTagName() to set the font size of all <p> elements to 20px.
+Use querySelector() to select the first <h1> element and change its background color to yellow.
+Use querySelectorAll() to select all <li> elements inside <ul id="menu"> and convert their text to uppercase.
+Create a new <p> element with the text "Hello DOM!" and append it inside <div id="container">.
+Remove the last <p> tag from <div id="container"> using DOM manipulation.
+Add a new <li> element with the text "New Item Added" inside <ul id="menu"> using appendChild().
+Use for loop to change the background color of all elements with class "note" to blue
+
+Use forEach loop with querySelectorAll() to add a red border to all elements with class "note".
+
+Use the style property to add padding and border to multiple selected elements dynamically.
+Use the textContent property to modify the text inside a heading or paragraph dynamically.
+Change the src attribute of an image with id="photo" to "Images/Rock.jpg" when a button is clicked.
+Create a button that, when clicked, adds a new paragraph with red text inside <div id="container">.
+Combine multiple DOM methods (querySelector, forEach, style) to apply different styles to elements on a button click. -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1 id="title">Heading</h1>
+    <p class="note">A</p>
+    <p class="note">B</p>
+    <p class="note">C</p>
+
+    <ul id="menu">
+        <li>first</li>
+        <li>second</li>
+        <li>third</li>
+        <li>fourth</li>
+    </ul>
+
+    <div id="container">
+        <p>AA</p>
+        <p>BB</p>
+        <p>CC</p>
+        <p>DD</p>
+        <p>EE</p>
+        <p>FF</p>
+    </div>
+    <img id="photo" src="Images/Scissor.jpg" width="200">
+
+    <button onclick="Getby()">GetBYID</button>
+    <button onclick="Query()">Query</button>
+    <button onclick="All()">All</button>
+    <button onclick="Add()">ADD</button>
+    <button onclick="Remove()">Remove</button>
+    <button onclick="note()">note</button>
+    <button onclick="iimage()">Image</button>
+    <button onclick="ChangeText()">hi</button>
+    <script>
+        function Getby() {
+            let Getbyid = document.getElementById("title");
+            Getbyid.textContent = "Welcome User";
+            Getbyid.style.color = "RED";
+
+
+            let name = document.getElementsByClassName("note")
+            for (let i = 0; i < name.length; i++) {
+                name[i].style.color = "RED"
+                name[i].style.background = "lightgrey"
+                name[i].style.padding = "2px"
+            }
+
+
+            let num = document.getElementsByTagName("p")
+            for (let i = 0; i < num.length; i++) {
+                num[i].style.fontSize = "20px"
+            }
+        }
+
+        function Query() {
+            let query = document.querySelector("h1")
+
+            query.style.background = "yellow"
+            query.style.color = "Blue"
+            query.style.padding = "2px"
+        }
+
+        function All() {
+            let all = document.querySelectorAll("li")
+
+            for (let i = 0; i < all.length; i++) {
+                all[i].style.textTransform = "uppercase"
+            }
+
+            let jj = document.querySelectorAll(".note")
+            jj.forEach((item) => {
+                item.style.border = "2px solid red";
+                item.style.padding = "5px";
+            });
+        }
+
+        function Add() {
+            let newP = document.createElement("p")
+            newP.textContent = "New";
+            newP.style.color = "RED"
+
+            document.getElementById("container").appendChild(newP)
+        }
+
+        function Remove() {
+            let container = document.getElementById("container");
+            const lastPara = container.lastElementChild;
+            if (lastPara) {
+                container.removeChild(lastPara);
+            }
+        }
+
+        function note() {
+            let no = document.getElementsByClassName("note")
+            for (let i = 0; i < no.length; i++) {
+                no[i].style.background = "blue"
+            }
+        }
+
+
+        function iimage() {
+            document.getElementById("photo").src = "Images/Rock.jpg"
+        }
+
+        function ChangeText() {
+            let heading = document.getElementById("title");
+            let hd = document.getElementsByTagName("p");
+
+            heading.textContent = "Text Changed Dynamically using textContent!";
+            hd.textContent = " p tag is changed"
+            heading.style.color = "purple";
+            heading.style.background = "lightyellow";
+
+            for (let i = 0; i < hd.length; i++) {
+                hd[i].textContent = "Paragraph text changed dynamically!";
+                hd[i].style.color = "purple";
+                hd[i].style.background = "lightyellow";
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>

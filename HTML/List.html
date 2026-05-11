@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List Example</title>
+</head>
+<body>
+    <h1>List Example</h1>
+    <h2>Unordered List</h2>
+    <ul style = "list-style-type: none;">
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+    <hr>
+    <h2>Ordered List</h2>
+    <ol style = "list-style-type: upper-alpha;">
+        <li>First Item</li>
+        <li>Second Item</li>
+        <li>Third Item</li>
+    </ol>
+    <hr>
+    <h2>Both List</h2>
+    <ul>
+        <li>Fruits
+             <ol style = "list-style-type: upper-alpha;" start="24">    <!--Here 24 indicate alphabet-->
+                <li>Apple</li>
+                <li>Banana
+                    <ul style = "list-style-type: none;" >
+                        <li>Kela 1</li>
+                        <li>kela 2</li>
+                    </ul>
+                </li>
+                <li>Cherry</li>
+            </ol>
+        </li>
+        <li>Vegetables</li>
+        <li>Meat</li>
+    </ul>
+    <hr>
+    <h2>Website Design</h2>
+    <ul style="list-style-type: none; display: flex; gap: 15px;">
+    <li><a href="https://www.youtube.com/watch?v=5ccq_nLHneE" target="_blank">Home</a></li>
+    <a href="https://www.example.com/about" target="_blank">About</a>
+    <a href="https://www.example.com/services" target="_blank">Service</a>
+    <li><a href="mailto:info@yourdomain.com" target="_blank">Contact</a></li>
+    </ul>
+
+    <p>
+        When a user clicks on navigation menu items such as Home, About, Services, or Contact,
+        the selected section becomes visually highlighted to indicate that it is currently active.
+        This is usually achieved through CSS by assigning a special class like .active to the clicked link.
+        The active state not only changes the appearance of the link — for example, by changing its color,
+        underlining it, or making it bold — but also improves the user experience by helping visitors
+        understand where they are on the website. This feature is especially useful on websites 
+        with multiple pages or sections, as it allows for better orientation and navigation.
+    </p>
+    
+    <hr>
+</body>
+</html>

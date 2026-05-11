@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pro AI Mood Quiz — Polished Replies</title>
+<style>
+  :root{
+    --bg1:#071022; --bg2:#0b2540; --card:#071a2b;
+    --accent:#48c6ef; --accent2:#9d50bb; --glass:rgba(255,255,255,0.04);
+    --muted:rgba(255,255,255,0.64);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+  body{
+    background:radial-gradient(1200px 600px at 10% 10%, rgba(77,148,255,0.06), transparent),
+               linear-gradient(180deg,var(--bg1), var(--bg2));
+    display:flex;align-items:center;justify-content:center;padding:28px;color:#e9f7ff;
+  }
+
+  /* App shell */
+  .app { width: 980px; max-width:98%; display:grid; grid-template-columns: 1fr 420px; gap:22px; align-items:start; }
+  .header { grid-column: 1 / -1; display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  h1 { margin:0; font-size:20px; letter-spacing:0.2px; }
+  .sub { color:var(--muted); font-size:13px }
+
+  /* Left: quiz area (3D card) */
+  .quiz-wrap { background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; padding:18px; box-shadow:0 12px 50px rgba(2,6,23,0.6); min-height:520px; transform-style:preserve-3d; }
+  .card { width:100%; height:360px; position:relative; perspective:1200px; }
+  .card-inner { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition: transform 700ms cubic-bezier(.2,.9,.25,1); }
+  .question-card { position:absolute; inset:0; backface-visibility:hidden; border-radius:12px; padding:20px; display:flex; flex-direction:column; justify-content:space-between;
+                   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); box-shadow:0 8px 28px rgba(2,8,23,0.5); }
+  .question-num { color:var(--muted); font-weight:600; font-size:13px; margin-bottom:8px; }
+  .question-text { font-size:20px; line-height:1.35; margin-bottom:12px; }
+  .options { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .opt {
+    background:var(--glass); padding:12px; border-radius:10px; cursor:pointer; user-select:none; transition: transform .18s ease, box-shadow .18s ease, background .18s;
+    border:1px solid rgba(255,255,255,0.03); display:flex; align-items:center; gap:10px;
+    transform-origin:center; box-shadow:0 6px 18px rgba(0,0,0,0.45);
+  }
+  .opt:hover { transform: translateY(-8px) rotateX(3deg) scale(1.02); box-shadow:0 24px 40px rgba(0,0,0,0.55); }
+  .opt .label { font-weight:700; color:#001; background:linear-gradient(90deg,var(--accent),var(--accent2)); padding:6px 8px; border-radius:8px; color:white; font-size:12px }
+  .opt .text { color:#e8f6ff; font-weight:600; font-size:14px }
+  .opt.selected { background:linear-gradient(90deg, rgba(72,198,239,0.95), rgba(157,80,187,0.95)); transform:translateY(-8px) scale(1.02) !important; color:#08121a; border-color:rgba(255,255,255,0.06)}
+
+  .nav { display:flex; justify-content:space-between; align-items:center; margin-top:14px; gap:12px; }
+  .btn { background:linear-gradient(90deg,var(--accent),var(--accent2)); border:none; padding:10px 14px; color:#04121a; font-weight:700; border-radius:10px; cursor:pointer; box-shadow:0 8px 20px rgba(73,170,220,0.12); transition:transform .15s }
+  .btn.secondary { background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); font-weight:600; }
+  .progress { height:10px; background:rgba(255,255,255,0.03); border-radius:999px; overflow:hidden; margin-top:10px; }
+  .progress > i { display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .45s ease; }
+
+  /* Right: Chat / analysis area */
+  .panel { background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01)); border-radius:14px; padding:14px; min-height:520px; box-shadow:0 8px 40px rgba(2,6,23,0.6) }
+  .chat { max-height:380px; overflow:auto; padding-right:8px; transition: all .28s ease; }
+  .bubble { margin:10px 0; display:flex; gap:10px; align-items:flex-start; }
+  .bubble .text { transition: opacity .36s ease, transform .28s cubic-bezier(.2,.9,.25,1); }
+  .bubble.user .text { background:linear-gradient(90deg,#0b1220,#071a2b); color:var(--muted); padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03) }
+  .bubble.ai .text { background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#04121a; padding:12px 14px; border-radius:12px; font-weight:700; }
+  /* dim older AI replies */
+  .bubble.ai.dimmed .text { opacity:0.45; filter:grayscale(24%); transform: scale(0.995); font-weight:600; }
+  /* AI typewriter effect (revealing text) */
+  .ai-text-inner { display:inline-block; white-space:pre-wrap; overflow:hidden; vertical-align:middle; }
+  .ai-typing { border-right: 2px solid rgba(4,18,26,0.14); padding-right:6px; animation: blink 900ms steps(2,end) infinite; }
+  @keyframes blink { 50% { border-color: transparent; } }
+
+  .summary { margin-top:12px; padding:12px; border-radius:12px; background:linear-gradient(180deg, rgba(72,198,239,0.06), rgba(157,80,187,0.04)); border:1px solid rgba(255,255,255,0.03); color:#e9f7ff; opacity:0; transform:scale(.995); transition: all .36s cubic-bezier(.2,.9,.25,1); }
+  .summary.show { opacity:1; transform:scale(1); }
+  .score { font-size:36px; font-weight:800; margin:6px 0; color:#fff; letter-spacing:0.5px}
+  .mood { font-weight:700; font-size:18px; margin-bottom:6px}
+
+  /* confetti + particles (canvas overlay) */
+  canvas.layer { position:fixed; left:0; top:0; pointer-events:none; z-index:9999; }
+
+  /* tiny responsive */
+  @media (max-width:980px) {
+    .app { grid-template-columns: 1fr; }
+    .panel{ order: 2; margin-top:12px }
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div>
+        <h1>Pro AI Mood Quiz</h1>
+        <div class="sub">10 quick prompts • professional feedback • refined replies</div>
+      </div>
+      <div>
+        <button class="btn secondary" id="restart">New Quiz</button>
+      </div>
+    </div>
+
+    <div class="quiz-wrap">
+      <div class="card" id="card">
+        <div class="card-inner" id="cardInner">
+          <!-- question cards injected here -->
+        </div>
+      </div>
+
+      <div class="progress" aria-hidden>
+        <i id="prog"></i>
+      </div>
+
+      <div class="nav">
+        <button class="btn secondary" id="prev">Previous</button>
+        <div style="display:flex;gap:8px">
+          <button class="btn secondary" id="reset">Reset</button>
+          <button class="btn" id="next">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="chat" id="chat" aria-live="polite"></div>
+
+      <div class="summary" id="summary" aria-hidden>
+        <div class="mood" id="moodLabel">—</div>
+        <div class="score" id="scoreText">0 / 100</div>
+        <div id="desc" style="color:var(--muted)"></div>
+        <div style="margin-top:10px;color:var(--muted)" id="remaining"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- canvases for confetti and sparkles -->
+  <canvas id="confettiCanvas" class="layer"></canvas>
+  <canvas id="sparkCanvas" class="layer"></canvas>
+
+<script>
+/* ========== Pool (kept as you had it) ========== */
+const POOL = [
+  { q:"When you're given a group task, what role do you take?", opts:[ {t:"I lead & organize", v:9}, {t:"I plan details", v:8}, {t:"I support others", v:7}, {t:"I suggest ideas", v:8} ] },
+  { q:"When making decisions you mostly rely on:", opts:[ {t:"Data & logic", v:9}, {t:"My feelings", v:7}, {t:"Others' advice", v:6}, {t:"Quick instinct", v:8} ] },
+  { q:"On a free day you prefer to:", opts:[ {t:"Learn or read", v:8}, {t:"Meet friends", v:7}, {t:"Create art", v:9}, {t:"Go on adventure", v:8} ] },
+  { q:"Under stress you usually:", opts:[ {t:"Analyze calmly", v:9}, {t:"Talk to a friend", v:7}, {t:"Listen to music", v:6}, {t:"Act immediately", v:8} ] },
+  { q:"In conversations you are:", opts:[ {t:"A thoughtful listener", v:8}, {t:"Storyteller", v:7}, {t:"Direct & clear", v:6}, {t:"Idea generator", v:8} ] },
+  { q:"When a project is complex you:", opts:[ {t:"Break into parts", v:9}, {t:"Jump in & adapt", v:7}, {t:"Plan deeply", v:8}, {t:"Ask teammates", v:6} ] },
+  { q:"What's more important to you?", opts:[ {t:"Growth & learning", v:9}, {t:"Stability", v:6}, {t:"Excitement", v:8}, {t:"Community", v:7} ] },
+  { q:"If a friend is upset, you:", opts:[ {t:"Listen closely", v:9}, {t:"Offer advice", v:7}, {t:"Make them laugh", v:6}, {t:"Give them space", v:8} ] },
+  { q:"Rules are:", opts:[ {t:"Useful", v:6}, {t:"Flexible", v:8}, {t:"To be challenged", v:7}, {t:"Context-dependent", v:9} ] },
+  { q:"Planning a holiday, you prefer:", opts:[ {t:"Detailed itinerary", v:9}, {t:"Rough plan", v:7}, {t:"Explore freely", v:8}, {t:"Relax & recharge", v:6} ] },
+
+  { q:"When someone criticizes you, you:", opts:[ {t:"Reflect & improve", v:9}, {t:"Defend immediately", v:6}, {t:"Ignore & move on", v:7}, {t:"Discuss calmly", v:8} ] },
+  { q:"Your energy source is:", opts:[ {t:"Quiet alone work", v:7}, {t:"Team energy", v:9}, {t:"Short bursts of action", v:8}, {t:"Creative flow", v:9} ] },
+  { q:"You prefer to learn by:", opts:[ {t:"Reading & study", v:9}, {t:"Doing & practice", v:8}, {t:"Watching others", v:7}, {t:"Discussing", v:8} ] },
+  { q:"When plans fail, you:", opts:[ {t:"Try again quickly", v:9}, {t:"Feel discouraged", v:6}, {t:"Analyze what went wrong", v:8}, {t:"Look for new fun", v:7} ] },
+  { q:"Your friends call you:", opts:[ {t:"Reliable", v:9}, {t:"Funny", v:8}, {t:"Deep thinker", v:9}, {t:"Adventurous", v:8} ] },
+  { q:"Big decisions are taken by:", opts:[ {t:"Research & facts", v:9}, {t:"Heart & feeling", v:7}, {t:"Consultation", v:8}, {t:"Gut instinct", v:8} ] },
+  { q:"You recharge by:", opts:[ {t:"Quiet reading", v:8}, {t:"Exercise", v:8}, {t:"Social time", v:9}, {t:"Creative hobby", v:9} ] },
+  { q:"Risk makes you feel:", opts:[ {t:"Excited", v:9}, {t:"Wary", v:6}, {t:"Challenged", v:8}, {t:"Curious", v:8} ] },
+  { q:"When organizing an event you:", opts:[ {t:"Plan every detail", v:9}, {t:"Wing it", v:7}, {t:"Delegate tasks", v:8}, {t:"Design the vibe", v:9} ] },
+  { q:"When angry you tend to:", opts:[ {t:"Stay silent", v:6}, {t:"Express it", v:8}, {t:"Walk away", v:7}, {t:"Talk it out", v:8} ] }
+];
+
+/* ========== State ========== */
+let quiz = [];            // current 10 questions
+let idx = 0;
+let answers = [];         // store indexes selected
+let totalScore = 0;
+
+/* DOM refs */
+const cardInner = document.getElementById('cardInner');
+const prog = document.getElementById('prog');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const resetBtn = document.getElementById('reset');
+const restartBtn = document.getElementById('restart');
+const chatEl = document.getElementById('chat');
+const summary = document.getElementById('summary');
+const moodLabel = document.getElementById('moodLabel');
+const scoreText = document.getElementById('scoreText');
+const desc = document.getElementById('desc');
+const remaining = document.getElementById('remaining');
+
+/* ========== Utilities ========== */
+function pickRandomQuestions(pool, n=10){
+  const arr = [...pool];
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr.slice(0,n);
+}
+
+function animateFlip(direction='forward'){
+  cardInner.style.transform = `rotateY(${direction === 'forward' ? -12 : 12}deg)`;
+  setTimeout(()=> cardInner.style.transform = 'rotateY(0deg)', 300);
+}
+
+function updateProgress(){
+  const done = answers.filter(a => a !== null && a !== undefined).length;
+  const pct = Math.round((done / quiz.length) * 100);
+  prog.style.width = pct + '%';
+}
+
+/* ========== Smarter, unique AI reply system ========== */
+
+/*
+ Approach:
+ - generateAIReply() now chooses tone based on current computed percent and question keywords.
+ - addAIBubble() type-writes the AI answer and dims previous AI bubbles (class 'dimmed').
+ - maintain per-session usedReplies set to avoid repeating the exact phrase.
+*/
+
+const usedReplies = new Set(); // avoid identical reply duplicates in session
+
+function computeTempScore(){
+  let total = 0; let max = quiz.length * 10;
+  answers.forEach((a, i)=>{ if(a!=null) total += quiz[i].opts[a].v; });
+  return Math.round((total / max) * 100);
+}
+
+// helper: sanitize small phrase to be used as "trait word"
+function traitFromText(t){
+  // pick last meaningful word or first two words, fallback whole
+  const cleaned = t.replace(/[^a-zA-Z\s]/g,'').trim();
+  const parts = cleaned.split(/\s+/);
+  if(parts.length <= 2) return cleaned;
+  return parts.slice(0,2).join(' ');
+}
+
+// reply templates grouped by mood tone
+const REPLIES = {
+  calm: [
+    `Noted — choosing "{opt}" suggests a calm, steady approach. Keep leaning into this consistency.`,
+    `I see you picked "{opt}". That reflects a composed style — helpful in sustained work.`,
+    `Good choice: "{opt}". Stable and thoughtful behavior; small systems will amplify it.`
+  ],
+  energetic: [
+    `Nice — "{opt}" signals energetic action. Use that momentum on tasks needing drive.`,
+    `By choosing "{opt}" you show energy and initiative. Try channeling it into focused sprints.`,
+    `"{opt}" stands out as proactive — excellent for starting and shipping ideas quickly.`
+  ],
+  empathetic: [
+    `Selecting "{opt}" shows empathy and social awareness — valuable when collaborating.`,
+    `That choice ("{opt}") highlights an emotionally intelligent approach; great for team work.`,
+    `"{opt}" suggests you prioritize people — use that to strengthen relationships and influence.`
+  ],
+  analytical: [
+    `"{opt}" indicates an analytical mindset — break problems down and you’ll excel.`,
+    `Choosing "{opt}" points to a data-driven style; pairing it with experimentation yields results.`,
+    `An analytical pick ("{opt}") — consistency in method will increase your impact.`
+  ],
+  smallTips: [
+    'Try a short experiment this week that supports this strength.',
+    'Small, consistent steps will compound quickly here.',
+    'Consider pairing this tendency with a small accountability habit.',
+    'A brief reflection after tasks helps convert insights into routine.'
+  ]
+};
+
+function pickTone(percent){
+  if(percent >= 80) return 'calm';
+  if(percent >= 65) return 'analytical';
+  if(percent >= 50) return 'empathetic';
+  return 'energetic';
+}
+
+function generateAIReply(question, optionText, percentScore){
+  // build a reply string: tone-based + unique template + short tip
+  const tone = pickTone(percentScore);
+  // choose a template from that tone
+  const group = REPLIES[tone] || REPLIES.calm;
+  let base = group[Math.floor(Math.random()*group.length)];
+  base = base.replace('{opt}', optionText);
+  // add a short unique tip (rotate)
+  const tip = REPLIES.smallTips[Math.floor(Math.random()*REPLIES.smallTips.length)];
+  let reply = `${base} ${tip}`;
+  // ensure uniqueness — fall back to small modification if used
+  let attempt = 0;
+  while(usedReplies.has(reply) && attempt < 6){
+    // slightly vary by changing tip or template
+    const altTip = REPLIES.smallTips[(Math.floor(Math.random()*REPLIES.smallTips.length))];
+    base = group[Math.floor(Math.random()*group.length)].replace('{opt}', optionText);
+    reply = `${base} ${altTip}`;
+    attempt++;
+  }
+  usedReplies.add(reply);
+  return reply;
+}
+
+/* Add chat bubble with typewriter and dim older replies */
+function addAIBubble(fullText){
+  // dim previous .bubble.ai elements
+  document.querySelectorAll('.bubble.ai').forEach(el => {
+    el.classList.add('dimmed');
+  });
+
+  // create new AI bubble
+  const aBubble = document.createElement('div'); aBubble.className='bubble ai';
+  const inner = document.createElement('div'); inner.className='text';
+  const aiTextSpan = document.createElement('span');
+  aiTextSpan.className = 'ai-text-inner ai-typing';
+  inner.appendChild(aiTextSpan);
+  aBubble.appendChild(inner);
+  chatEl.appendChild(aBubble);
+
+  // smooth scroll
+  chatEl.scrollTop = chatEl.scrollHeight;
+
+  // typewriter reveal (approximate speed)
+  const chars = fullText.split('');
+  let i = 0;
+  const speed = 14 + Math.floor(Math.random()*18); // variable speed
+  const reveal = () => {
+    if(i <= chars.length){
+      aiTextSpan.textContent = chars.slice(0,i).join('');
+      chatEl.scrollTop = chatEl.scrollHeight;
+      i++;
+      setTimeout(reveal, speed);
+    } else {
+      aiTextSpan.classList.remove('ai-typing');
+      // remove caret style and ensure final pop
+      aiTextSpan.style.borderRight = '0';
+      // after fully typed, small entrance transform
+      inner.style.transform = 'translateY(0)';
+      chatEl.scrollTop = chatEl.scrollHeight;
+    }
+  };
+  reveal();
+}
+
+/* push user bubble (keeps same behavior) */
+function pushUserBubble(userText){
+  const uBubble = document.createElement('div'); uBubble.className='bubble user';
+  uBubble.innerHTML = `<div class="text"><strong>You:</strong> ${userText}</div>`;
+  chatEl.appendChild(uBubble);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+/* ========== Render question card ========== */
+function renderQuestion(i){
+  const q = quiz[i];
+  const html = `
+    <div class="question-card" data-index="${i}">
+      <div>
+        <div class="question-num">Question ${i+1} of ${quiz.length}</div>
+        <div class="question-text">${q.q}</div>
+        <div class="options">
+          ${q.opts.map((o,oi)=>`
+            <div class="opt ${answers[i]===oi ? 'selected' : ''}" data-oi="${oi}">
+              <div class="label">${String.fromCharCode(65+oi)}</div>
+              <div class="text">${o.t}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  cardInner.innerHTML = html;
+
+  // attach handlers
+  document.querySelectorAll('.opt').forEach(el=>{
+    el.onclick = ()=> {
+      const oi = parseInt(el.getAttribute('data-oi'));
+      answers[i] = oi;
+      animateFlip('forward');
+      // push user chat and AI reply (now uses smarter system)
+      const userText = quiz[i].q + ' — ' + quiz[i].opts[oi].t;
+      pushUserBubble(userText);
+
+      const percent = computeTempScore();
+      const aiText = generateAIReply(quiz[i].q, quiz[i].opts[oi].t, percent);
+
+      // add AI bubble with typewriter and dim previous
+      setTimeout(()=> addAIBubble(aiText), 260);
+
+      // update visuals & progress
+      renderQuestion(i);
+      updateProgress();
+    };
+    // hover tilt
+    el.onmousemove = (e)=>{
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width/2, cy = r.top + r.height/2;
+      const dx = (e.clientX - cx)/r.width * 8; const dy = (e.clientY - cy)/r.height * 8;
+      el.style.transform = `rotateX(${-dy}deg) rotateY(${dx}deg) translateZ(8px)`;
+    };
+    el.onmouseleave = ()=> el.style.transform = '';
+  });
+  updateProgress();
+}
+
+/* ========== Navigation handlers ========== */
+prevBtn.onclick = ()=> {
+  if(idx>0){ idx--; renderQuestion(idx); }
+};
+nextBtn.onclick = ()=> {
+  if(idx < quiz.length -1){
+    // when moving forward, gently dim the last AI reply (if present)
+    document.querySelectorAll('.bubble.ai').forEach(el => el.classList.add('dimmed'));
+    idx++; renderQuestion(idx);
+  } else {
+    finishQuiz();
+  }
+};
+
+/* Reset: generate new questions every time (keeps your requested behavior) */
+resetBtn.onclick = ()=> {
+  if(confirm('Reset and load new random questions?')){
+    quiz = pickRandomQuestions(POOL, 10).map(q => ({ q: q.q, opts: q.opts }));
+    answers = Array(quiz.length).fill(null);
+    chatEl.innerHTML = '';
+    summary.style.display = 'none';
+    summary.classList.remove('show');
+    idx = 0;
+    usedReplies.clear();
+    renderQuestion(0);
+    updateProgress();
+    cardInner.style.transform = 'translateY(10px) rotateX(2deg)';
+    setTimeout(()=> cardInner.style.transform = 'translateY(0) rotateX(0)', 260);
+  }
+};
+
+/* Restart / New Quiz: also produces entirely new questions (keeps consistent UX) */
+restartBtn.onclick = ()=> {
+  if(confirm('Start a brand new quiz?')){
+    startNewQuiz();
+  }
+};
+
+/* ========== Finish and professional summary ========== */
+function finishQuiz(){
+  if(answers.filter(a=>a!=null).length < 3){
+    alert('Please answer at least 3 questions for me to analyze your mood.');
+    return;
+  }
+  let total=0; let max=quiz.length*10;
+  answers.forEach((a,i)=>{ if(a!=null) total += quiz[i].opts[a].v; });
+  const percent = Math.round((total / max)*100);
+  const rem = 100 - percent;
+  totalScore = percent;
+  const traitScores = {};
+  answers.forEach((a,i)=>{
+    if(a==null) return;
+    const label = quiz[i].opts[a].t;
+    traitScores[label] = (traitScores[label] || 0) + quiz[i].opts[a].v;
+  });
+  const sorted = Object.entries(traitScores).sort((a,b)=>b[1]-a[1]);
+  const top = sorted.slice(0,3).map(s=>s[0]);
+  const mood = describeMood(percent, top);
+
+  moodLabel.textContent = mood.title;
+  scoreText.textContent = percent + ' / 100';
+  desc.textContent = mood.text;
+  remaining.textContent = `Remaining: ${rem} out of 100 — small steps will amplify your strengths.`;
+  summary.style.display = 'block';
+  setTimeout(()=> summary.classList.add('show'), 20);
+
+  // final AI summary in chat (unique)
+  const finalText = `Analysis complete — core patterns: ${top.join(', ')}. ${mood.text}`;
+  addAIBubble(finalText);
+
+  // scaled confetti intensity based on score
+  startConfetti(Math.max(20, Math.round(percent / 100 * 150)));
+}
+
+/* mood map */
+function describeMood(percent, topTraits){
+  const t1 = topTraits[0] || 'Balanced';
+  let title = '', text='';
+  if(percent >= 85) {
+    title = `High Stability — ${t1}`;
+    text = `You display strong, consistent tendencies such as ${topTraits.join(', ')}. You handle pressure well and inspire trust. Keep refining small skills to broaden your influence.`;
+  } else if(percent >= 70){
+    title = `Positive & Balanced — ${t1}`;
+    text = `You show a healthy balance of strengths including ${topTraits.join(', ')}. You're adaptable; small routine tweaks will further raise your effectiveness.`;
+  } else if(percent >= 50){
+    title = `Sensitive & Resilient — ${t1}`;
+    text = `You demonstrate meaningful strengths like ${topTraits.join(', ')}. Build resilience with gradual habits and focused practice.`;
+  } else {
+    title = `Creative & Reflective — ${t1}`;
+    text = `Your pattern suggests exploration and feeling like ${topTraits.join(', ')}. Embrace small experiments and structure to convert creativity into consistent outcomes.`;
+  }
+  return { title, text };
+}
+
+/* ========== Init new quiz flow ========== */
+function startNewQuiz(){
+  quiz = pickRandomQuestions(POOL, 10).map(q => ({ q: q.q, opts: q.opts }));
+  idx = 0; answers = Array(quiz.length).fill(null); totalScore = 0;
+  chatEl.innerHTML = ''; summary.style.display='none'; summary.classList.remove('show');
+  usedReplies.clear();
+  renderQuestion(0);
+  cardInner.style.transform = 'translateY(6px) rotateX(2deg)';
+  setTimeout(()=> cardInner.style.transform = 'translateY(0) rotateX(0)', 260);
+  updateProgress();
+}
+
+/* ========== Confetti & particle visuals (canvas) ========== */
+const confCanvas = document.getElementById('confettiCanvas');
+const sparkCanvas = document.getElementById('sparkCanvas');
+const confCtx = confCanvas.getContext('2d');
+const sparkCtx = sparkCanvas.getContext('2d');
+let confettiParticles = [], sparks=[];
+
+function resizeAll(){
+  confCanvas.width = window.innerWidth;
+  confCanvas.height = window.innerHeight;
+  sparkCanvas.width = window.innerWidth;
+  sparkCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeAll);
+resizeAll();
+
+function startConfetti(intensity = 80){
+  confettiParticles = Array.from({length: intensity}, ()=>{
+    return {
+      x: Math.random()*confCanvas.width,
+      y: -Math.random()*confCanvas.height,
+      r: 4+Math.random()*10,
+      dx: (Math.random()-0.5)*2.5,
+      dy: 2+Math.random()*5,
+      c: `hsl(${Math.random()*360},80%,60%)`,
+      rot: Math.random()*360
+    };
+  });
+  sparks = Array.from({length:Math.min(60, Math.round(intensity/2))}, ()=>{
+    return { x: confCanvas.width/2 + (Math.random()-0.5)*200, y: confCanvas.height/4, vx:(Math.random()-0.5)*6, vy:Math.random()*-6-2, life: 40+Math.random()*40, c:`hsl(${Math.random()*360},80%,60%)`};
+  });
+  requestAnimationFrame(frame);
+  setTimeout(()=>{ confettiParticles = []; sparks = []; }, 3800);
+}
+function frame(){
+  confCtx.clearRect(0,0,confCanvas.width, confCanvas.height);
+  sparkCtx.clearRect(0,0,sparkCanvas.width, sparkCanvas.height);
+  confettiParticles.forEach(p=>{
+    p.x += p.dx; p.y += p.dy; p.rot += p.dx*6;
+    confCtx.save();
+    confCtx.translate(p.x, p.y);
+    confCtx.rotate(p.rot * Math.PI/180);
+    confCtx.fillStyle = p.c;
+    confCtx.fillRect(-p.r/2, -p.r/2, p.r, p.r*0.6);
+    confCtx.restore();
+  });
+  sparks.forEach(s=>{
+    s.x += s.vx; s.y += s.vy; s.vy += 0.18; s.life--;
+    sparkCtx.beginPath();
+    sparkCtx.fillStyle = s.c; sparkCtx.arc(s.x, s.y, 3,0,Math.PI*2); sparkCtx.fill();
+  });
+  if(confettiParticles.length || sparks.length) requestAnimationFrame(frame);
+}
+
+/* Initialize */
+startNewQuiz();
+updateProgress();
+
+/* Keyboard shortcuts */
+document.addEventListener('keydown', e=>{
+  if(e.key === 'ArrowRight') nextBtn.click();
+  if(e.key === 'ArrowLeft') prevBtn.click();
+});
+
+</script>
+</body>
+</html>

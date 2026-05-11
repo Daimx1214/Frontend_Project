@@ -1,0 +1,89 @@
+
+
+<!DOCTYPE html>
+<html>
+<html lang="en"></html>
+<head>
+  <title>Extra Form Elements</title>
+  <style>
+    body {
+      background-color: lightgrey;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      color: rgb(145, 145, 124);
+    }
+    h1:hover {
+      color: rgb(0, 0, 0);
+    }
+
+    fieldset {
+      border: 2px solid rgb(19, 18, 18);
+      padding: 20px;
+      margin: 20px auto;
+      width: 280px;
+      background-color: rgb(207, 204, 204);
+    }
+
+    legend {
+      font-weight: bold;
+      color: #555;
+    }
+
+    label {
+       display: block; 
+       font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"] {
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: rgb(124, 236, 124);
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: darkgreen;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 style> FieldSetForm</h1>
+  <form>
+    <fieldset>
+      <legend>Personal Info</legend>
+      <label>Username:</label>
+      <input type="text" placeholder="Enter your username" required><br><br>
+
+      <label>Password:</label>
+      <input type="password" placeholder="Enter password (max: 8) " maxlength="8" required><br><br>
+
+      <label>Email:</label>
+      <input type="email" placeholder="Enter your email" required><br><br>
+
+      <label>Phone:</label>
+      <input type="tel" placeholder="03XX-XXXXXXX" required><br><br>
+
+      <button type="submit">Submit</button>
+
+    </fieldset>
+  </form>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Picture Tag Demo</title>
+</head>
+<body>
+
+<h1>Responsive Image</h1>
+
+<picture>
+    <!-- Large screen image -->
+    <source srcset="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d"  media="(min-width: 1024px)">
+    
+    <!-- Medium screen image -->
+    <source srcset="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d" media="(min-width: 600px)">
+    
+    <!-- Small screen image -->
+    <source srcset="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d" media="(max-width: 599px)">
+    
+    <!-- Fallback image -->
+    <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d" alt="Responsive Image"  height ="750" width="800">
+</picture>
+
+</body>
+</html>

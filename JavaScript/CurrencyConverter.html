@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency Converter</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: navy;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    h2 {
+      color: blue;
+    }
+
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 330px;
+    }
+
+    form {
+      margin: 2rem 0 1rem 0;
+    }
+
+    form input,
+    button {
+      width: 100%;
+      outline: none;
+      border-radius: 2rem;
+      border: 1px solid gray;
+    }
+
+    form input {
+      font-size: 1rem;
+      height: 2rem;
+      padding: 4px;
+    }
+
+    .dropdowns {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      gap: 1rem;
+    }
+
+    .currency-box {
+      flex: 1;
+    }
+
+    .currency-box p {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .currency-select {
+      display: flex;
+      align-items: center;
+      border: 1px solid gray;
+      border-radius: 0.5rem;
+      padding: 0.3rem;
+      background: #f9f9f9;
+    }
+
+    .currency-select img {
+      max-width: 2rem;
+      margin-right: 0.5rem;
+    }
+
+    .currency-select select {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 1rem;
+      flex: 1;
+    }
+
+    .msg {
+      margin: 1rem 0;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2 style="text-align:center;">Currency Converter</h2>
+    <form>
+      <div class="amount">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
+      </div>
+
+      <!-- From & To side by side -->
+      <div class="dropdowns">
+        <div class="currency-box">
+          <p>From</p>
+          <div class="currency-select">
+            <img src="https://flagsapi.com/US/flat/64.png" id="fromFlag">
+            <select id="fromCurrency" name="fromCurrency" required>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="JPY">JPY</option>
+              <option value="AUD">AUD</option>
+              <option value="CAD">CAD</option>
+              <option value="CHF">CHF</option>
+              <option value="CNY">CNY</option>
+              <option value="SEK">SEK</option>
+              <option value="NZD">NZD</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="currency-box">
+          <p>To</p>
+          <div class="currency-select">
+            <img src="https://flagsapi.com/ER/flat/64.png" id="toFlag">
+            <select id="toCurrency" name="toCurrency" required>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="JPY">JPY</option>
+              <option value="AUD">AUD</option>
+              <option value="CAD">CAD</option>
+              <option value="CHF">CHF</option>
+              <option value="CNY">CNY</option>
+              <option value="SEK">SEK</option>
+              <option value="NZD">NZD</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="msg">1$ = 287 PKR</div>
+      <button type="submit">Convert</button>
+    </form>
+  </div>
+
+</body>
+
+</html>

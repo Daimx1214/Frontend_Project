@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>getElementById</title>
+</head>
+<body>
+
+  <h1 id="heading"> Text & Heading</h1>
+
+  <button onclick="changeColorText()">Change Colour and Text</button>
+
+  <script>
+    function changeColorText() {
+      var head = document.getElementById("heading")
+      head.style.color = "blue";
+      head.innerText = "Text and Heading Changed";
+    }
+  </script>
+
+</body>
+</html>
+<hr>
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>querySelector</title>
+</head>
+
+<body>
+  <ul>
+    <list id = "Hi">Ali</list>
+  </ul>
+  <p id="mypara">Hello</p>
+
+  <script>
+    let a = document.getElementById("Hi");
+    console.log(a.innerHTML);
+    a.innerHTML = "HTML Course"
+    let x = document.querySelector("#mypara");
+  x.innerText = "Bye Bye!";
+
+  </script>
+</body>
+</html>
+<hr>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>getElementById</title>
+</head>
+
+<body>
+  <img id="pic" src="https://via.placeholder.com/100">
+<button onclick="hideImage()">Hide</button>
+
+<script>
+  function hideImage() {
+    document.getElementById("pic").style.display = "none";
+  }
+</script>
+
+</body>
+</html>
+
+
+

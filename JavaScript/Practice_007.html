@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM Properties & Methods Demo</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f8fafc;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 25px;
+    }
+
+    #container {
+      background: #fff;
+      border: 2px solid #9a9797;
+      border-radius: 12px;
+      padding: 20px;
+      width: 600px;
+      margin: auto;
+      transition: all 0.3s ease;
+    }
+
+    p {
+      margin: 8px 0;
+      font-size: 16px;
+      color: #333;
+    }
+
+    button {
+      margin: 6px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #114f78;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1f6fb2;
+    }
+
+    #log {
+      margin-top: 20px;
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: left;
+      width: 600px;
+      margin: 25px auto;
+      font-family: monospace;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="title">DOM Property Testing</h1>
+
+  <div id="container">
+    <p class="para">Hello, I am a paragraph inside the container.</p>
+    <a id="link" href="https://google.com">Visit Google</a>
+  </div>
+
+  <br><hr><br>
+
+  <!-- ✅ Each Button for Single Property -->
+  <button onclick="showTagName()">tagName</button>
+  <button onclick="changeInnerText()">innerText</button>
+  <button onclick="changeInnerHTML()">innerHTML</button>
+  <button onclick="showTextContent()">textContent</button>
+  <button onclick="getAttr()">getAttribute</button>
+  <button onclick="setAttr()">setAttribute</button>
+  <button onclick="changeStyle()">style</button>
+  <button onclick="createAndAppend()">createElement + append</button>
+  <button onclick="prependEl()">prepend</button>
+  <button onclick="insertBeforeAfter()">before + after</button>
+  <button onclick="removeEl()">remove</button>
+
+  <div id="log"></div>
+
+  <script>
+    const log = document.getElementById("log");
+    const container = document.getElementById("container");
+    const link = document.getElementById("link");
+
+    // 1️⃣ tagName
+    function showTagName() {
+      let el = document.getElementById("title");
+      log.innerHTML += `tagName: <b>${el.tagName}</b><br>`;
+    }
+
+    // 2️⃣ innerText
+    function changeInnerText() {
+      let para = document.querySelector(".para");
+      para.innerText = "Changed via innerText ✅";
+      log.innerHTML += "Updated paragraph using <b>innerText</b><br>";
+    }
+
+    // 3️⃣ innerHTML
+    function changeInnerHTML() {
+      container.innerHTML += "<p><b>New paragraph via innerHTML ✅</b></p>";
+      log.innerHTML += "Added new HTML using <b>innerHTML</b><br>";
+    }
+
+    // 4️⃣ textContent
+    function showTextContent() {
+      let text = container.textContent;
+      log.innerHTML += `Container textContent: <b>${text}</b><br>`;
+    }
+
+    // 5️⃣ getAttribute
+    function getAttr() {
+      let href = link.getAttribute("href");
+      log.innerHTML += `getAttribute('href'): <b>${href}</b><br>`;
+    }
+
+    // 6️⃣ setAttribute
+    function setAttr() {
+      link.setAttribute("href", "https://youtube.com");
+      link.setAttribute("target", "_blank");
+      log.innerHTML += "Updated link using <b>setAttribute()</b> ✅<br>";
+    }
+
+    // 7️⃣ style
+    function changeStyle() {
+      container.style.backgroundColor = "#eaf4ff";
+      container.style.border = "2px solid #3498db";
+      container.style.padding = "25px";
+      log.innerHTML += "Changed <b>style</b> of container ✅<br>";
+    }
+
+    // 8️⃣ createElement + append
+    function createAndAppend() {
+      let newP = document.createElement("p");
+      newP.textContent = "Appended paragraph ✅";
+      container.append(newP);
+      log.innerHTML += "Used <b>createElement + append()</b><br>";
+    }
+
+    // 9️⃣ prepend
+    function prependEl() {
+      let newP = document.createElement("p");
+      newP.textContent = "Prepended paragraph ✅";
+      container.prepend(newP);
+      log.innerHTML += "Used <b>prepend()</b><br>";
+    }
+
+    // 🔟 before() + after()
+    function insertBeforeAfter() {
+      let beforeP = document.createElement("p");
+      beforeP.textContent = "Before container ✅";
+      container.before(beforeP);
+
+      let afterP = document.createElement("p");
+      afterP.textContent = "After container ✅";
+      container.after(afterP);
+
+      log.innerHTML += "Used <b>before()</b> and <b>after()</b><br>";
+    }
+
+    // 1️⃣1️⃣ remove()
+    function removeEl() {
+      let p = document.querySelector(".para");
+      if (p) {
+        p.remove();
+        log.innerHTML += "Removed paragraph using <b>remove()</b> ✅<br>";
+      } else {
+        alert("Paragraph already removed!");
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+

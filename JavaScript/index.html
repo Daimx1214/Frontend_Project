@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Professional Auth Interface for MVC</title>
+
+  <style>
+    /* ====================================================================
+       DESIGN TOKENS (Enhanced & Cleaned)
+       ==================================================================== */
+    :root{
+      --bg-dark: #070e1b;
+      --bg-gradient-start: #0c1524;
+      --bg-gradient-end: #040915;
+      --accent-primary: #4f46e5;   /* Indigo */
+      --accent-secondary: #8b5cf6; /* Violet */
+      --text-main: #0b1220;
+      --text-muted: #64748b; /* Slate Gray */
+      --text-white: #ffffff;
+      --glass-light: rgba(255,255,255,0.08); /* More visible glass */
+      --glass-dark: rgba(255,255,255,0.04);
+      --card-bg-start: rgba(255,255,255,1);
+      --card-bg-end: rgba(248,250,252,0.98);
+      --success: #16a34a;
+      --danger: #ef4444;
+      --radius-xxl: 24px;
+      --radius-xl: 16px;
+      --radius-lg: 10px;
+      --shadow-deep: 0 25px 50px -12px rgba(2,6,23,0.48);
+      --container-w: 1080px; /* Wider Container */
+      --auth-card-w: 580px; /* Wider Auth Card */
+      --timing-smooth: 450ms; /* Smoother animation */
+      --fz-sm: 14px;
+      --fz-md: 16px; /* Slightly larger base font */
+      --fz-lg: 20px;
+      --input-padding-y: 12px; /* Deeper input padding */
+      --input-padding-x: 16px;
+      --glass-border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ====================================================================
+       BASE RESET
+       ==================================================================== */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    input, button, select, textarea { font-family: inherit; }
+
+    /* ====================================================================
+       BODY BACKDROP + LAYOUT (Perfect Centering)
+       ==================================================================== */
+    body {
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px; /* Increased padding */
+      color: var(--text-main);
+      overflow-y: auto;
+    }
+
+    /* central shell */
+    .shell {
+      width: 100%;
+      max-width: var(--container-w);
+      display: grid;
+      grid-template-columns: 1fr var(--auth-card-w); /* Auth card has fixed width */
+      gap: 30px; /* Increased gap */
+      align-items: center; /* Center vertically in shell */
+      margin: 0 auto;
+    }
+
+    /* ====================================================================
+       LEFT HERO (INFO / BRAND)
+       ==================================================================== */
+    .hero {
+      background: linear-gradient(180deg, var(--glass-light), var(--glass-dark));
+      border-radius: var(--radius-xxl);
+      padding: 40px; /* Increased padding */
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      justify-content: center;
+      box-shadow: var(--shadow-deep);
+      border: var(--glass-border);
+      backdrop-filter: blur(12px) saturate(140%); /* Sharper glass effect */
+      min-height: 600px;
+    }
+    .brand {
+      display:flex; gap:14px; align-items:center;
+    }
+    .logo {
+      width:64px; height:64px; border-radius:var(--radius-lg);
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      display:grid; place-items:center; color:var(--text-white); font-weight:800; font-size:24px;
+      box-shadow: 0 12px 30px rgba(79,70,229,0.2);
+    }
+    .brand h3 { margin:0; font-size:var(--fz-lg); color:var(--text-white); }
+    .brand p { margin:0; font-size:var(--fz-sm); color: rgba(255,255,255,0.9); }
+
+    .hero h1 {
+      margin:0; color: var(--text-white); font-size:38px; line-height:1.1; /* Larger font */
+      letter-spacing: -0.5px;
+      font-weight: 800;
+    }
+    .hero p.lead {
+      margin:0; color: rgba(255,255,255,0.88); max-width:55ch; font-size:var(--fz-md); /* Slightly larger text */
+    }
+    .features { margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
+    .chip {
+      background: rgba(255,255,255,0.1); color: var(--text-white);
+      padding:8px 14px; border-radius:999px; font-size:var(--fz-sm);
+      border: 1px solid rgba(255,255,255,0.05);
+      font-weight: 600;
+    }
+    .hero .controls { margin-top:20px; display:flex; gap:16px; align-items:center; }
+
+    /* Button Base Style for Hero/Auth */
+    .btn-base {
+      padding:12px 20px; border-radius:var(--radius-lg); font-weight:700; cursor:pointer;
+      transition: all 200ms ease;
+      text-align: center;
+    }
+    .btn-ghost {
+      background: transparent; border: 2px solid rgba(255,255,255,0.4); /* Thicker border */
+      color: var(--text-white);
+    }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: var(--text-white);
+    }
+    .btn-primary {
+      background: linear-gradient(90deg,var(--accent-primary),var(--accent-secondary));
+      color:var(--text-white); border:none;
+      box-shadow: 0 10px 30px rgba(79,70,229,0.3);
+    }
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* ====================================================================
+       RIGHT CARD (AUTH)
+       ==================================================================== */
+    .card {
+      background: linear-gradient(180deg, var(--card-bg-start), var(--card-bg-end));
+      border-radius: var(--radius-xxl);
+      padding: 24px;
+      box-shadow: var(--shadow-deep);
+      border: 1px solid rgba(13,22,36,0.08);
+      min-height: 600px;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:hidden;
+    }
+
+    .auth {
+      width:100%; max-width:480px; /* Elements get more space inside */
+      height:100%; position:relative;
+    }
+
+    /* each panel is absolute and will slide */
+    .panel {
+      position:absolute; inset:0; padding:30px 24px; /* Increased panel padding */
+      display:flex; flex-direction:column; justify-content:center; gap:16px;
+      transition: transform var(--timing-smooth) cubic-bezier(.68,-0.55,.26,1.55), opacity 300ms;
+      background: transparent;
+    }
+
+    /* default: login visible, signup off-screen right */
+    .panel.login { transform: translateX(0); opacity:1; z-index:2; }
+    .panel.signup { transform: translateX(120%); opacity:0; pointer-events:none; z-index:1; }
+
+    /* when signup-mode active, swap transforms */
+    .auth.signup-mode .panel.login { transform: translateX(-120%); opacity:0; pointer-events:none; z-index:1; }
+    .auth.signup-mode .panel.signup { transform: translateX(0); opacity:1; pointer-events:auto; z-index:2; }
+
+    /* small header area */
+    .panel .header {
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 10px;
+    }
+    .panel h2 { margin:0; font-size:26px; color:var(--text-main); font-weight: 800; }
+    .panel p.sub { margin:0; font-size:var(--fz-md); color:var(--text-muted); }
+
+    /* FORM STYLE */
+    form { display:flex; flex-direction:column; gap:12px; margin-top:10px; }
+    label { font-size:var(--fz-sm); color:#334155; margin-bottom:4px; display:block; font-weight: 600; }
+    .input-group { position:relative; display:flex; align-items:center; }
+    .input-icon {
+      width:44px; height:44px; display:grid; place-items:center; margin-right:8px;
+      color:var(--text-muted); background: rgba(2,6,23,0.05); border-radius:var(--radius-lg);
+      flex-shrink:0; font-size:18px;
+    }
+    .input {
+      width:100%;
+      padding: var(--input-padding-y) var(--input-padding-x);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(13,22,36,0.12);
+      background: var(--text-white);
+      font-size: var(--fz-md);
+      color: var(--text-main);
+      transition: box-shadow 200ms, border-color 200ms;
+      outline:none;
+      min-width: 0;
+    }
+    .input:focus { box-shadow: 0 4px 15px rgba(79,70,229,0.1); border-color: var(--accent-primary); }
+
+    /* password input refinement */
+    .password-toggle-group { position: relative; width: 100%; }
+    .password-toggle-group .input { padding-right: 50px; }
+    .password-toggle-btn {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: var(--text-muted);
+        font-size: 16px;
+        padding: 10px 15px;
+        line-height: 1;
+        transition: color 200ms;
+    }
+    .password-toggle-btn:hover { color: var(--accent-primary); }
+
+    /* small inline actions row */
+    .inline-action { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:6px; }
+    .small-text { font-size:var(--fz-sm); color:var(--text-muted); }
+    .link-action { color: var(--accent-primary); cursor:pointer; font-weight:600; font-size:var(--fz-sm); transition: color 200ms; }
+    .link-action:hover { color: var(--accent-secondary); }
+
+    .btn-auth { 
+        display:inline-flex; align-items:center; justify-content:center; gap:8px; 
+        padding:12px 20px; border-radius:var(--radius-lg); border:none; cursor:pointer; font-weight:700; 
+        background: linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)); color:var(--text-white);
+        transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+    .btn-auth:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(79,70,229,0.25);
+    }
+    .btn-auth.secondary { 
+        background:transparent; border:1px solid rgba(13,22,36,0.1); color:var(--text-main); box-shadow:none; font-weight:600; 
+    }
+    .btn-auth.secondary:hover {
+        background: rgba(13,22,36,0.05);
+        border-color: rgba(13,22,36,0.15);
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+    /* Social/OAuth Buttons */
+    .social-btns {
+        display:flex; gap:10px; align-items:center; justify-content:center;
+    }
+    .social-btns .btn-auth {
+        padding: 10px 16px;
+        font-size: var(--fz-md);
+    }
+
+    /* Signup Name Fields layout */
+    .form-row { display:flex; gap:12px; }
+    .form-row .form-col { flex:1; }
+
+    /* small messages */
+    .message { padding:14px; border-radius:var(--radius-lg); font-size:var(--fz-sm); margin-top: 10px; font-weight: 600; }
+    .message.error { background: rgba(254,226,226,0.95); color: var(--danger); border: 1px solid rgba(239,68,68,0.1); }
+    .message.ok { background: rgba(236,253,245,0.95); color: var(--success); border: 1px solid rgba(16,185,129,0.1); }
+
+    /* password strength */
+    .strength { height:10px; border-radius:10px; background: rgba(2,6,23,0.08); overflow:hidden; margin-top:6px; }
+    .strength > i { display:block; height:100%; width:0; background: linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)); transition: width 300ms ease; }
+
+    /* modals (forgot password) */
+    .modal-backdrop { 
+      position:fixed; inset:0; background: rgba(2,6,23,0.7); 
+      display:none; align-items:center; justify-content:center; 
+      z-index:10000; 
+      opacity: 0;
+      transition: opacity 300ms;
+    }
+    .modal-backdrop.active { 
+      opacity: 1;
+      display:flex;
+    }
+    .modal { 
+      width:480px; max-width: 90%; 
+      background: var(--text-white); padding:30px; border-radius:var(--radius-xl); 
+      box-shadow:0 30px 80px rgba(2,6,23,0.6); border: 1px solid rgba(13,22,36,0.1); 
+      transform: scale(0.9); opacity: 0;
+      transition: transform 300ms ease-out, opacity 300ms ease-out;
+    }
+    .modal-backdrop.active .modal {
+        transform: scale(1);
+        opacity: 1;
+    }
+    .modal h3 { margin:0 0 10px 0; font-size:22px; font-weight: 700; }
+    .modal p { margin:0 0 16px 0; color:var(--text-muted); font-size:var(--fz-md); }
+
+    /* footer / legal */
+    .legal { font-size:var(--fz-sm); color:var(--text-muted); text-align:center; margin-top:18px; }
+
+    /* decorative */
+    .accent-pill { display:inline-block; padding:8px 12px; border-radius:999px; background: linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)); color:var(--text-white); font-weight:700; box-shadow:0 4px 10px rgba(79,70,229,0.15); font-size:var(--fz-sm); }
+    .divider { height:1px; background:rgba(2,6,23,0.1); margin:20px 0; border-radius:2px; }
+
+    /* responsive adjustments (Crucial for eliminating "upar niche" problems) */
+    @media (max-width:1080px) {
+      .shell { 
+          grid-template-columns: 1fr; 
+          gap:20px; 
+          padding-bottom: 32px;
+          max-width: 580px; /* Single column layout max width */
+        }
+      .hero { order:2; min-height:280px; padding:24px; }
+      .card { order:1; padding:20px; min-height:500px; }
+      .auth { max-width:100%; }
+      .panel { padding:24px 0; /* Remove horizontal padding since card already has it */ }
+    }
+
+    /* Smallest screens (Full width everything) */
+    @media (max-width:580px) {
+      body { padding: 16px; }
+      .shell { max-width: 100%; }
+      .form-row { flex-direction: column; gap: 0; }
+      .form-row .form-col { margin-bottom: 12px; }
+      .inline-action { flex-wrap: wrap; justify-content: center; } 
+      .inline-action > div { flex: 1 1 100%; text-align: center; }
+      .hero .controls { flex-direction: column; }
+      .hero .controls .btn-base { width: 100%; }
+      .social-btns { flex-wrap: wrap; }
+      .social-btns .btn-auth { flex: 1 1 45%; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="shell" role="main" aria-labelledby="auth-heading">
+
+    <section class="hero" aria-hidden="false">
+      <div class="brand" role="banner">
+        <div class="logo" aria-hidden="true">MVC</div>
+        <div>
+          <h3>MVC App Dashboard Access</h3>
+          <p>Secure authentication for your C.R.U.D. application</p>
+        </div>
+      </div>
+
+      <h1>The future of your data management starts here.</h1>
+      <p class="lead">Sign in to manage your resources and records securely. Create a new account if you're a first-time user.</p>
+
+      <div class="features" aria-hidden="true">
+        <span class="chip">Robust Security</span>
+        <span class="chip">Full CRUD Support</span>
+        <span class="chip">Clean Interface</span>
+      </div>
+
+      <div class="controls" aria-hidden="true">
+        <button class="btn-primary btn-base" id="cta-getstarted">Start Managing</button>
+        <button class="btn-ghost btn-base" id="cta-docs">API Docs</button>
+      </div>
+
+      <div style="margin-top:24px;color:rgba(255,255,255,0.85);display:flex;gap:10px;align-items:center">
+        <span class="small-text" style="color:rgba(255,255,255,0.85)">Hotkeys:</span>
+        <span class="kbd">Alt + L</span>
+        <span class="small-text" style="color:rgba(255,255,255,0.85)">→ Login</span>
+        <span class="kbd">Alt + S</span>
+        <span class="small-text" style="color:rgba(255,255,255,0.85)">→ Signup</span>
+      </div>
+    </section>
+
+    <aside class="card" aria-labelledby="auth-heading">
+      <div class="auth" id="auth" aria-live="polite" role="application" aria-label="Authentication">
+
+        <section class="panel login" aria-labelledby="login-title" role="region">
+          <div class="header">
+            <div>
+              <h2 id="login-title">Welcome Back</h2>
+              <p class="sub">Sign in to continue to your dashboard</p>
+            </div>
+            <div class="accent-pill" aria-hidden="true">Secure</div>
+          </div>
+
+          <div id="loginStatus" style="display:none"></div>
+
+          <form id="loginForm" autocomplete="on" novalidate>
+            <div>
+              <label for="loginUser">Email or Username</label>
+              <div class="input-group">
+                <span class="input-icon" aria-hidden="true">📧</span>
+                <input id="loginUser" class="input" type="text" name="user" placeholder="Enter your email or username" aria-describedby="loginUserHelp" required />
+              </div>
+              <div id="loginUserHelp" class="small-text" style="margin-top:6px">Use your registered credentials.</div>
+            </div>
+
+            <div>
+              <label for="loginPassword">Password</label>
+              <div class="input-group">
+                <span class="input-icon" aria-hidden="true">🔒</span>
+                <div class="password-toggle-group">
+                  <input id="loginPassword" class="input" type="password" name="password" placeholder="••••••••••••" required aria-describedby="loginPwdHelp" />
+                  <button type="button" id="loginPwdToggle" class="password-toggle-btn" aria-label="Toggle password visibility" title="Show password">👁️</button>
+                </div>
+              </div>
+              <div id="loginPwdHelp" class="inline-action" style="margin-top:6px">
+                <span class="small-text muted">Minimum 8 characters</span>
+                <a href="#" id="linkForgot" class="link-action" style="margin-left:auto">Forgot Password?</a>
+              </div>
+            </div>
+
+            <div class="inline-action" style="margin-top:12px">
+              <div style="display:flex;gap:8px;align-items:center">
+                <input id="rememberMe" type="checkbox" />
+                <label for="rememberMe" class="small-text">Remember me</label>
+              </div>
+              <div>
+                <a href="#" id="openSignup" class="link-action">Create New Account</a>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:16px">
+              <button class="btn-auth" type="submit" id="btnLogin" style="flex:2">Sign in</button>
+              <button class="btn-auth secondary" type="button" id="btnDemoLogin" style="flex:1">Demo</button>
+            </div>
+          </form>
+
+          <div class="divider" aria-hidden="true"></div>
+
+          <div class="social-btns">
+            <button class="btn-auth secondary" id="btnGoogle" aria-label="Sign in with Google">Google</button>
+            <button class="btn-auth secondary" id="btnGitHub" aria-label="Sign in with GitHub">GitHub</button>
+          </div>
+
+          <div class="legal">By signing in you accept our <a href="#" class="link-action">Terms</a> and <a href="#" class="link-action">Privacy Policy</a>.</div>
+        </section>
+
+        <section class="panel signup" aria-labelledby="signup-title" role="region">
+          <div class="header">
+            <div>
+              <h2 id="signup-title">Get Started</h2>
+              <p class="sub">Create your account for full access</p>
+            </div>
+            <div class="accent-pill" aria-hidden="true">New</div>
+          </div>
+
+          <div id="signupStatus" style="display:none"></div>
+
+          <form id="signupForm" autocomplete="on" novalidate>
+            <div class="form-row">
+              <div class="form-col">
+                <label for="firstName">First Name</label>
+                <input id="firstName" class="input" type="text" name="firstName" placeholder="John" required />
+              </div>
+              <div class="form-col">
+                <label for="lastName">Last Name</label>
+                <input id="lastName" class="input" type="text" name="lastName" placeholder="Doe" required />
+              </div>
+            </div>
+
+            <div>
+              <label for="signupEmail">Email Address</label>
+              <input id="signupEmail" class="input" type="email" name="email" placeholder="you@example.com" required />
+            </div>
+
+            <div>
+              <label for="signupUser">Choose Username</label>
+              <input id="signupUser" class="input" type="text" name="username" placeholder="a_unique_username" required />
+            </div>
+
+            <div>
+              <label for="signupPassword">Create Password</label>
+              <input id="signupPassword" class="input" type="password" name="password" placeholder="••••••••••••" required />
+              <div class="strength" aria-hidden="true"><i id="strengthBar"></i></div>
+            </div>
+
+            <div>
+              <label for="signupConfirm">Confirm Password</label>
+              <input id="signupConfirm" class="input" type="password" name="confirm" placeholder="Repeat password" required />
+            </div>
+
+            <div class="inline-action">
+              <div class="small-text">Password requires: Min 8 chars, 1 Upper, 1 Number.</div>
+              <div><a href="#" id="toLogin" class="link-action">Back to Login</a></div>
+            </div>
+
+            <div style="margin-top:16px">
+              <button class="btn-auth" type="submit" id="btnSignup" style="width:100%">Create Account</button>
+            </div>
+          </form>
+
+          <div class="legal" style="margin-top:14px">Already have an account? <a href="#" id="alreadyLogin" class="link-action">Sign in here</a>.</div>
+        </section>
+      </div>
+    </aside>
+
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <h3 id="modalTitle">Reset Password</h3>
+      <p>Enter your registered email address to receive a password reset link (Demo Only).</p>
+      <div style="margin-top:8px">
+        <label for="resetEmail">Email Address</label>
+        <input id="resetEmail" class="input" type="email" placeholder="you@example.com" />
+      </div>
+      <div id="modalMsg" style="margin-top:10px;display:none"></div>
+      <div style="margin-top:20px;display:flex;gap:12px;justify-content:flex-end">
+        <button class="btn-auth secondary" id="modalCancel">Cancel</button>
+        <button class="btn-auth" id="modalSend">Send Reset Link</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       Utility helpers
+       ========================================================================= */
+    const $ = (sel, ctx = document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+
+    function setMessage(container, text, type = 'error') {
+      container.textContent = text;
+      container.className = 'message ' + (type === 'error' ? 'error' : 'ok');
+      container.style.display = 'block';
+      if (type === 'ok') {
+        setTimeout(()=> { container.style.display = 'none'; }, 4000);
+      }
+    }
+    function clearMessage(container) {
+      container.style.display = 'none';
+    }
+
+    /* =========================================================================
+       Element refs
+       ========================================================================= */
+    const auth = $('#auth');
+    const loginForm = $('#loginForm');
+    const signupForm = $('#signupForm');
+    const loginStatus = $('#loginStatus');
+    const signupStatus = $('#signupStatus');
+
+    const loginUser = $('#loginUser');
+    const loginPassword = $('#loginPassword');
+    const loginPwdToggle = $('#loginPwdToggle');
+    const btnDemoLogin = $('#btnDemoLogin');
+
+    const openSignupLink = $('#openSignup');
+    const alreadyLogin = $('#alreadyLogin');
+    const toLogin = $('#toLogin');
+
+    const signupPassword = $('#signupPassword');
+    const signupConfirm = $('#signupConfirm');
+    const strengthBar = $('#strengthBar');
+
+    const modalBackdrop = $('#modalBackdrop');
+    const modalCancel = $('#modalCancel');
+    const modalSend = $('#modalSend');
+    const resetEmail = $('#resetEmail');
+    const modalMsg = $('#modalMsg');
+    const linkForgot = $('#linkForgot');
+
+    /* =========================================================================
+       Accessibility: focus initial
+       ========================================================================= */
+    setTimeout(()=> { loginUser.focus(); }, 400);
+
+    /* =========================================================================
+       Toggle functions: show signup / show login
+       ========================================================================= */
+    function showSignup() {
+      auth.classList.add('signup-mode');
+      setTimeout(()=> {
+        const fn = $('#firstName');
+        if (fn) fn.focus();
+      }, 500);
+    }
+    function showLogin() {
+      auth.classList.remove('signup-mode');
+      setTimeout(()=> loginUser.focus(), 500);
+    }
+
+    openSignupLink.addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
+    alreadyLogin.addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
+    toLogin.addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
+    $('#btnDemoLogin').addEventListener('click', (e) => { e.preventDefault(); demoLogin(); });
+    $('#cta-getstarted').addEventListener('click', ()=> showSignup());
+
+    /* keyboard shortcuts */
+    document.addEventListener('keydown', (e) => {
+      if (e.altKey && (e.key === 's' || e.key === 'S')) { showSignup(); e.preventDefault(); }
+      if (e.altKey && (e.key === 'l' || e.key === 'L')) { showLogin(); e.preventDefault(); }
+      // Close modal on escape
+      if (e.key === 'Escape' && modalBackdrop.classList.contains('active')) { closeModal(); }
+    });
+
+    /* =========================================================================
+       Password toggle
+       ========================================================================= */
+    loginPwdToggle.addEventListener('click', () => {
+      const t = loginPassword;
+      const isPassword = t.type === 'password';
+      if (isPassword) { 
+        t.type = 'text'; 
+        loginPwdToggle.textContent = '🙈';
+        loginPwdToggle.setAttribute('title', 'Hide password');
+      }
+      else { 
+        t.type = 'password'; 
+        loginPwdToggle.textContent = '👁️'; 
+        loginPwdToggle.setAttribute('title', 'Show password');
+      }
+      t.focus();
+    });
+
+    /* =========================================================================
+       Password strength meter
+       ========================================================================= */
+    function strengthScore(value) {
+      let score = 0;
+      if (!value || value.length < 8) return 0; // Requires min length 8
+      if (/[A-Z]/.test(value)) score++;
+      if (/[0-9]/.test(value)) score++;
+      if (/[^A-Za-z0-9]/.test(value)) score++;
+      // Score will be 1 to 3 if min length met and conditions met
+      return score + 1; // 1..4 (1 for length, +3 for complexity)
+    }
+    function updateStrengthUI(v) {
+      const s = strengthScore(v);
+      const pct = Math.min(100, (s / 4) * 100);
+      strengthBar.style.width = pct + '%';
+      if (s <= 1) strengthBar.style.background = 'linear-gradient(90deg,#ff6b6b,#ff9a9a)'; // Red
+      else if (s === 2) strengthBar.style.background = 'linear-gradient(90deg,#f6c84c,#f4d35e)'; // Orange/Yellow
+      else if (s === 3) strengthBar.style.background = 'linear-gradient(90deg,#6ee7b7,#22c55e)'; // Light Green
+      else strengthBar.style.background = 'linear-gradient(90deg,var(--accent-primary),var(--accent-secondary))'; // Full strength
+    }
+    signupPassword.addEventListener('input', (e) => updateStrengthUI(e.target.value));
+
+    /* =========================================================================
+       Fake API (Replace with your MVC Backend Fetch/AJAX calls)
+       ========================================================================= */
+    function fakeApi(payload, type = 'login') {
+      return new Promise((resolve, reject) => {
+        // Simulate network delay
+        setTimeout(() => {
+          try {
+            if (type === 'login') {
+              const okUsers = [
+                { user: 'demo.user', pwd: 'demo1234' },
+                { user: 'admin', pwd: 'admin' }
+              ];
+              const found = okUsers.find(u => (u.user === payload.user && u.pwd === payload.password));
+              if (found) resolve({ ok:true, token:'fake-token-mvc-crud', name: found.user });
+              else reject({ ok:false, message:'Invalid credentials. Hint: Use demo.user / demo1234' });
+            } else if (type === 'signup') {
+              if (payload.password !== payload.confirm) reject({ ok:false, message:'Passwords do not match.'});
+              if (strengthScore(payload.password) < 4) reject({ ok:false, message:'Password is too weak. Must meet all rules.'});
+              if (payload.username === 'taken') reject({ ok:false, message:'Username already taken.'});
+              else resolve({ ok:true, message:'Account created successfully! Please log in now.'});
+            } else if (type === 'forgot') {
+              if (!payload.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) reject({ ok:false, message:'Please enter a valid email address.'});
+              else resolve({ ok:true, message:'Password reset link sent to your email (Demo).' });
+            } else {
+              reject({ ok:false, message:'Unknown request' });
+            }
+          } catch (err) {
+            reject({ ok:false, message:'A server error occurred.' });
+          }
+        }, 1000 + Math.random()*500); // 1.0 to 1.5 second delay
+      });
+    }
+
+    /* =========================================================================
+       Login form submit
+       ========================================================================= */
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMessage(loginStatus);
+
+      const user = loginUser.value.trim();
+      const password = loginPassword.value;
+
+      if (!user || !password) {
+        setMessage(loginStatus, 'Please fill out both the email/username and password fields.', 'error');
+        return;
+      }
+      setMessage(loginStatus, 'Attempting to sign in, please wait...', 'ok');
+      try {
+        const res = await fakeApi({ user, password }, 'login');
+        setMessage(loginStatus, `Success! Welcome back, ${res.name}. Redirecting...`, 'ok');
+        // In your MVC app, you would now store the token and redirect to the dashboard
+        setTimeout(() => {
+          alert('Login Successful (MVC Demo). Next step: Redirect to /dashboard');
+          clearMessage(loginStatus);
+        }, 1500);
+      } catch (err) {
+        setMessage(loginStatus, err.message || 'Login failed due to an unexpected error.', 'error');
+      }
+    });
+
+    /* =========================================================================
+       Demo login quick action
+       ========================================================================= */
+    function demoLogin() {
+      loginUser.value = 'demo.user';
+      loginPassword.value = 'demo1234';
+      loginForm.dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+
+    /* =========================================================================
+       Signup form submit
+       ========================================================================= */
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMessage(signupStatus);
+
+      const firstName = $('#firstName').value.trim();
+      const lastName = $('#lastName').value.trim();
+      const email = $('#signupEmail').value.trim();
+      const username = $('#signupUser').value.trim();
+      const password = $('#signupPassword').value;
+      const confirm = $('#signupConfirm').value;
+
+      if (!firstName || !lastName || !email || !username || !password || !confirm) {
+        setMessage(signupStatus, 'Please complete all required fields.', 'error'); return;
+      }
+      setMessage(signupStatus, 'Processing account creation...', 'ok');
+      try {
+        const res = await fakeApi({ firstName, lastName, email, username, password, confirm }, 'signup');
+        setMessage(signupStatus, res.message, 'ok');
+        // Redirect back to login after a successful signup
+        setTimeout(() => {
+          showLogin();
+          loginUser.value = username || email;
+          loginPassword.focus();
+        }, 1500);
+      } catch (err) {
+        setMessage(signupStatus, err.message || 'Account creation failed.', 'error');
+      }
+    });
+
+    /* =========================================================================
+       Forgot password modal handling
+       ========================================================================= */
+    linkForgot.addEventListener('click', (e) => {
+      e.preventDefault();
+      modalBackdrop.classList.add('active');
+      modalBackdrop.setAttribute('aria-hidden', 'false');
+      setTimeout(() => resetEmail.focus(), 300);
+    });
+    
+    function closeModal() {
+        resetEmail.value = '';
+        modalMsg.style.display = 'none';
+        modalBackdrop.classList.remove('active');
+        setTimeout(() => {
+            modalBackdrop.style.display = 'none';
+            modalBackdrop.setAttribute('aria-hidden', 'true');
+        }, 400);
+    }
+
+    modalCancel.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeModal();
+    });
+
+    modalSend.addEventListener('click', async (e) => {
+      e.preventDefault();
+      clearMessage(modalMsg);
+      const email = resetEmail.value.trim();
+      
+      setMessage(modalMsg, 'Requesting password reset link...', 'ok');
+      try {
+        const res = await fakeApi({ email }, 'forgot');
+        setMessage(modalMsg, res.message, 'ok');
+        setTimeout(()=> {
+          closeModal();
+        }, 2000);
+      } catch (err) {
+        setMessage(modalMsg, err.message || 'Failed to process your request.', 'error');
+      }
+    });
+
+    /* Placeholder/UX actions */
+    $('#cta-docs').addEventListener('click', ()=> alert('Opening API documentation (placeholder)'));
+    $('#btnGoogle').addEventListener('click', ()=> alert('Initiating Google OAuth flow (placeholder)'));
+    $('#btnGitHub').addEventListener('click', ()=> alert('Initiating GitHub OAuth flow (placeholder)'));
+    
+    // Hide messages on input focus for better UX
+    $$('input').forEach(i => {
+      i.addEventListener('focus', () => {
+        [loginStatus, signupStatus, modalMsg].forEach(c => { if (c) c.style.display='none'; });
+      });
+    });
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Form</title>
+    <!-- <link rel="stylesheet" href="cssProject.css"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: rgb(92, 92, 246);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+        }
+
+        header {
+            background-color: rgb(52, 15, 95);
+            color: white;
+            width: 100%;
+            height: 10vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header:hover,
+        footer:hover {
+            background-color: black;
+
+        }
+
+        .box {
+            width: 20vw;
+            height: 55vh;
+            background-color: rgb(14, 14, 222);
+            margin: 75px 510px;
+            border-radius: 10px;
+
+        }
+
+        form input::placeholder {
+            padding-left: 1px;
+        }
+
+        label[for="checkbox"] {
+            color: white;
+            margin-left: 5px;
+        }
+
+        input[type="checkbox"] {
+            width: 15px;
+            height: 20px;
+            margin: 24px 0px;
+            margin-left: 13px;
+            vertical-align: -4px;
+            color: white;
+            cursor: pointer;
+
+        }
+
+        form input {
+            width: 90%;
+            height: 5vh;
+            border-radius: 5px;
+            border: none;
+            margin: 3px 12px;
+            padding-left: 10px;
+        }
+
+        button {
+            width: 90%;
+            height: 5vh;
+            background-color: white;
+            color: black;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            margin: 3px 12px;
+        }
+
+        footer {
+            background-color: rgb(52, 15, 95);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            height: 10vh;
+            bottom: 0;
+            text-transform: uppercase;
+        }
+        @media (max-width: 600px) {
+    body {
+        font-size: 13px;
+    }
+
+    .box {
+        width: 95%;
+        margin: 50px auto;
+    }
+    
+        }
+    </style>
+</head>
+
+    <header>
+        <h1>Admission Form</h1>
+    </header>
+
+    <body>
+        <div class="container">
+            <div class="box" style="padding-top: 8px;">
+                <form action="submitForm.html" method="post">
+                <h2 style="color: white; font-weight: bold; text-align: center; margin: 0 0 10px 0;">Signup</h2>
+
+                    <label for="name"></label><br>
+                    <input type="text" id="name" name="name" placeholder="Full Name" required><br>
+
+                    <label for="email"></label><br>
+                    <input type="email" id="email" name="email" placeholder="Email address" required><br>
+
+                    <label for="password"></label><br>
+                    <input type="password" id="password" name="password" placeholder="Password"><br>
+                    <input type="checkbox" id="checkbox" name="checkbox" required>
+                    <label for="checkbox">I agree all terms & conditions</label>
+
+                    <button type="submit">Signup</button>
+                </form>
+        </div>
+    </body>
+    <footer>
+        <p>&copy; 2025 Your University. All rights reserved.</p>
+    </footer>
+
+</html>

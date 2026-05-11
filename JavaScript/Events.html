@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button, input {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+     <button id="btn1">Click me!</button>                 <!-- see Console of inspect -->
+    <button ondblclick="console.log('Button Clicked 2x')">Click me 2x</button>
+
+        <button onmouseover="console.log('Mouse Over')">Mouse Over me!</button>
+        <button onmouseout="console.log('Mouse Out')">Mouse Out me!</button>
+        <input type="text" onkeydown="console.log('Key Down')" placeholder="Key Down">
+        <input type="text" onkeyup="console.log('Key Up')" placeholder="Key Up">
+        <input type="text" onkeypress="console.log('Key Press')" placeholder="Key Press">
+        <input type="text" onchange="console.log('Change Event')" placeholder="Change Event">
+        <input type="text" onfocus="console.log('Focus Event')" placeholder="Focus Event">
+        <input type="text" onblur="console.log('Blur Event')" placeholder="Blur Event">
+        <form onsubmit="console.log('Form Submitted'); return false;">
+            <input type="text" placeholder="Submit Form">
+            <button type="submit">Submit</button>
+        </form>
+        
+    <script>
+    // let btn1 = document.querySelector("#btn1");
+    // btn1.onclick = () => {
+    //     console.log("Button Clicked");
+
+                     // OR 2nd way 
+                     
+     btn1.addEventListener("click", () => {
+        console.log("Button Clicked");
+    });
+    </script>
+</body>
+</html>

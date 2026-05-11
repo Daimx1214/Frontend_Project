@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNSUAM Form</title>
+    <style>
+        body {
+            background-color: rgb(224, 219, 219);
+            font-family: Arial, sans-serif;
+        }
+
+        img {
+            background-color: transparent;
+            width: 64px;
+            height: 60px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .box {
+            width: 300px;
+            /* height: 450px; */
+            background-color: rgb(232, 228, 228);
+            margin: 50px auto;
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        h1 {
+            color: rgb(0, 132, 0);
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: -26px;
+        }
+
+        p {
+            font-size: 25px;
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            text-align: left;
+            width: 107%;
+            padding: 9px;
+            margin: 4px -20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: -10px;
+        }
+
+        input[type="submit"] {
+            width: 113.5%;
+            padding: 10px;
+            margin: 6px -20px;
+            background-color: rgb(6, 218, 6);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: rgb(40, 255, 40);
+        }
+
+        input form {
+            width: 100%;
+            padding: 10px;
+            background-color: rgb(0, 132, 0);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        hr {
+            size: 5px;
+        }
+
+        button {
+            width: 113.5%;
+            padding: 10px;
+            margin: 6px -20px;
+            background-color: rgb(1, 182, 243);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+
+        button:hover {
+            background-color: blue;
+        }
+
+        .contact-info p {
+            font-size: 12px;
+            margin-bottom: 9px;
+            display: grid;
+            grid-template-columns: 102px 1fr;
+        }
+
+        .sign-up {
+            border-radius: 12px;
+        }
+        .child{
+            padding: 0px 20px 0px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="child">
+
+            <img src="UniLogo-Photoroom.png" alt="mns LOGO">
+            <h1>MNS-UAM</h1>
+            <p>Online Admission System</p>
+            <p style="font-size: 12px;     margin-bottom: 9px;">Please Login First to get access of the system</p>
+            <form action="MNSUAMFORM.html" method="post">
+                <input type="text" id="username" name="username" placeholder="CNIC or User ID" required><br><br>
+                <p id="ghalat"></p>
+                <input type="password" id="password" name="password" placeholder="Password" required><br><br>
+
+                <input type="submit" value="Sign-In">
+
+                <p style="font-size: 12px;margin-bottom: 9px; color: rgb(0, 89, 255);">──────Forgotten Your
+                    Passsword?───────</p>
+
+                <button class="sign-up">Please Click Here to Sign-Up</button>
+
+                <div class="contact-info">
+                    <p><strong>For Admission:</strong><span>03XX-XXXXXXX</span></p>
+                    <p><strong>Guidance:</strong><span>03XX-XXXXXXX</span></p>
+                </div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>
